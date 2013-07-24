@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:sec="http://www.springframework.org/schema/security" xmlns:oauth="http://www.springframework.org/schema/security/oauth2" xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+	<import resource="config-dev.xml" />
+
+	<!-- spring security configuration -->
+	<http access-denied-page="/login.jsp?authorization_error=true" xmlns="http://www.springframework.org/schema/security">
+		<intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<form-login authentication-failure-url="/login.jsp?authentication_error=true" default-target-url="/" login-page="/login.jsp" login-processing-url="/login.do" />
+		<logout logout-success-url="/login.jsp" logout-url="/logout.do" />
+		<anonymous />
+		<custom-filter ref="oauth2ClientFilter" after="EXCEPTION_TRANSLATION_FILTER" />
+	</http>
+
+	<authentication-manager xmlns="http://www.springframework.org/schema/security">
+		<authentication-provider>
+			<user-service>
+				<user name="marissa" password="wombat" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+	<!--define an oauth 2 -->
+	<!--apply the oauth client context -->
+	<oauth:client id="oauth2ClientFilter" />
+
+	<!-- PROD VPSA UPLOADER-->
+	<oauth:resource id="vpsa" type="authorization_code" client-id="51efbf8a0cf2abdaf902cbdb" client-secret="9e3899b7fd34dbdc488165415faa5a6f5659e4615353a098375717202d6ffb4ef" authentication-scheme="query" access-token-uri="https://www.vpsa.com.br/apps/oauth/token" user-authorization-uri="https://www.vpsa.com.br/apps/oauth/authorization" token-name="token" client-authentication-scheme="form" />
+
+	<!-- PROD VPSA UPLOADER INTERNO -->
+	<!-- <oauth:resource id="vpsa" type="authorization_code" client-id="51acb08170a7df4864000001" client-secret="98ddb62f75310717b99b380df676347907b23b0233fc719b852a15be5d799588" authentication-scheme="query" access-token-uri="https://www.vpsa.com.br/apps/oauth/token" user-authorization-uri="https://www.vpsa.com.br/apps/oauth/authorization" token-name="token" client-authentication-scheme="form" /> -->
+	<!-- QA VPSA UPLOADER-->
+	<!--<oauth:resource id="vpsa" type="authorization_code" client-id="51c37d40a3106677d9c2fb68" client-secret="6a95dd81a68b4adf55f31da601ca03210117d11a5aa8593b7f27ba0f6f52e28b" authentication-scheme="query" access-token-uri="https://quiron.vpsa.corp/apps/oauth/token" user-authorization-uri="https://quiron.vpsa.corp/apps/oauth/authorization" token-name="token" client-authentication-scheme="form" /> -->
+
+	<mvc:annotation-driven />
+	<context:annotation-config />
+
+	<context:component-scan base-package="br.com.catalagovpsa">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+	</context:component-scan>
+
+	<bean id="accessTokenProvider" class="org.springframework.security.oauth2.client.token.AccessTokenProviderChain">
+		<constructor-arg>
+			<list>
+				<bean class="org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeAccessTokenProvider" />
+			</list>
+		</constructor-arg>
+		<property name="clientTokenServices">
+			<bean class="br.com.catalagovpsa.oauth.MongoTokenServices" />
+		</property>
+	</bean>
+
+	<mvc:resources mapping="/assets/**" location="/assets/" />
+
+	<!-- Arquivos de configuracao *.properties -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/rest-urls.properties</value>
+				<value>classpath:/mongo.properties</value>				
+			</list>
+		</property>
+		<property name="properties">
+			<ref bean="urlsMap" />
+		</property>
+	</bean>			
+
+	<!-- http://stackoverflow.com/questions/6479712/why-is-jackson-wrapping-my-objects-with-an-extra-layer-named-after-the-class -->
+	<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" p:extractValueFromSingleKeyModel="true" />
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="vpsaController" class="br.com.catalagovpsa.controller.VPSAController">
+		<property name="loginDetail" value="${login.detail}"></property>
+		<property name="restTemplate">
+			<oauth:rest-template resource="vpsa" access-token-provider="accessTokenProvider">
+				<property name="messageConverters">
+					<list>
+						<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+							<property name="supportedMediaTypes">
+								<list>
+									<bean class="org.springframework.http.MediaType">
+										<constructor-arg value="application" />
+										<constructor-arg value="json" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</list>
+				</property>
+			</oauth:rest-template>
+		</property>
+	</bean>
+
+	<!-- mongo configuration -->
+	<mongo:mongo host="${MONGO_ADDR}" port="${MONGO_PORT}" />
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongo" />
+		<constructor-arg name="databaseName" value="${MONGO_BD}" />
+	</bean>
+
+	<!-- syncronize -->
+	<bean id="httpClientParams" class="org.apache.commons.httpclient.params.HttpClientParams">
+		<property name="authenticationPreemptive" value="true" />
+		<property name="connectionManagerClass" value="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager" />
+	</bean>
+
+	<bean id="httpClient" class="org.apache.commons.httpclient.HttpClient">
+		<constructor-arg ref="httpClientParams" />
+	</bean>
+
+	<bean id="httpClientFactory" class="org.springframework.http.client.CommonsClientHttpRequestFactory">
+		<constructor-arg ref="httpClient" />
+	</bean>
+
+	<bean id="synchronizeTemplate" class="org.springframework.web.client.RestTemplate">
+		<constructor-arg ref="httpClientFactory" />
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<bean class="org.springframework.http.MediaType">
+								<constructor-arg value="application" />
+								<constructor-arg value="json" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="synchronizeService" class="br.com.catalagovpsa.service.SynchronizeServiceImpl">
+		<property name="productsList" value="${products.list}"></property>
+	</bean>
+
+	<bean name="productTask" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="Durability" value="true" />
+		<property name="jobClass" value="br.com.catalagovpsa.task.ProductTask" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="synchronizeService" value-ref="synchronizeService" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="productTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="productTask" />
+		<!-- execute cron each 2 hours -->
+		<property name="cronExpression" value="0 0/5 * * * ?" />
+	</bean>
+
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="productTask" />
+			</list>
+		</property>
+		<property name="triggers">
+			<list>
+				<ref bean="productTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>
