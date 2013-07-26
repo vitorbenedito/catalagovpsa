@@ -1,0 +1,74 @@
+html, body{
+	background: #2C2C2C;
+}
+figure{
+	position: absolute;
+	margin-top: -61px;
+	margin-left: -25px;
+}
+section{
+	display:block;
+	position:absolute;
+	height: 56%;
+	bottom:0;
+	left: 0;
+	right: 0;
+	padding: 5px;
+	background: #E5E5E5;
+	box-shadow: 0 5px 10px rgba(102, 102, 102, 1) inset
+}
+form{
+	position:relative;
+	width: 430px;
+	left: 50%;
+	margin-left: -215px;
+}
+form div{
+	padding:2px;
+}
+form label{
+	padding-right: 2px;
+}
+form legend{
+	border:0;
+	padding-left: 5px;
+	font-size: 18px;
+	color: #666666;
+}
+
+a{
+	cursor: pointer;
+	color: #888888
+}
+a:hover{
+	color: #333333
+}
+
+/*
+* OVERRIDES
+*/
+input[type="text"], input[type="password"]{
+	width: 310px;
+	height: 20px;
+	font-size: 18px;
+	font-weight: none;
+	padding: 10px;
+	border-radius: 0;
+}
+input[type="submit"], input[type="submit"]:hover, input[type="submit"]:focus{
+	width: 110px;
+	margin-left: 5px;
+	position: absolute;
+	height: 42px;
+	float: right;
+	right: -20px;
+}
+.form-horizontal .control-label{
+	width: 70px;
+}
+legend{
+	margin-bottom: 0;
+}
+form{
+	margin-bottom: 5px;
+}
