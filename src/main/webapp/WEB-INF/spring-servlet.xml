@@ -82,7 +82,7 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<bean id="vpsaController" class="br.com.catalagovpsa.controller.VPSAController">
+	<bean id="customerService" class="br.com.catalagovpsa.service.CustomerServiceImpl">
 		<property name="loginDetail" value="${login.detail}"></property>
 		<property name="restTemplate">
 			<oauth:rest-template resource="vpsa" access-token-provider="accessTokenProvider">
