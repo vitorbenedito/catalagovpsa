@@ -6,7 +6,7 @@ import br.com.catalagovpsa.model.Product;
 
 public interface ProductRepository {
 
-	public String COLLECTION_NAME = "uploader_products";
+	public String COLLECTION_NAME = "products";
 
 	public int PER_PAGE = 10;
 

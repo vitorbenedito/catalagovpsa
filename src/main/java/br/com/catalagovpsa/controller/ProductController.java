@@ -27,7 +27,7 @@ public class ProductController {
 	@Autowired
 	private CustomerService customerService;
 	
-	@RequestMapping(value = "/")
+	@RequestMapping(value = "/adm")
 	public String index(Model model, HttpServletRequest request) throws Exception {
 
     	Customer customer = customerService.getCustomer();

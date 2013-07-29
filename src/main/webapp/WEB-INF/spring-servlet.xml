@@ -32,8 +32,8 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 	<oauth:client id="oauth2ClientFilter" />
 
 	<!-- PROD VPSA UPLOADER-->
-	<oauth:resource id="vpsa" type="authorization_code" client-id="51efbf8a0cf2abdaf902cbdb" client-secret="9e3899b7fd34dbdc488165415faa5a6f5659e4615353a098375717202d6ffb4e" authentication-scheme="query" access-token-uri="https://www.vpsa.com.br/apps/oauth/token" user-authorization-uri="https://www.vpsa.com.br/apps/oauth/authorization" token-name="token" client-authentication-scheme="form" />
-
+	<!-- <oauth:resource id="vpsa" type="authorization_code" client-id="51efbf8a0cf2abdaf902cbdb" client-secret="9e3899b7fd34dbdc488165415faa5a6f5659e4615353a098375717202d6ffb4e" authentication-scheme="query" access-token-uri="https://www.vpsa.com.br/apps/oauth/token" user-authorization-uri="https://www.vpsa.com.br/apps/oauth/authorization" token-name="token" client-authentication-scheme="form" /> -->
+	<oauth:resource id="vpsa" type="authorization_code" client-id="51f518880cf2d8d703a3206e" client-secret="dd30790816ccb15d9343648e36cd8a7bf30524b70c93c165c3d56a146a3a7416" authentication-scheme="query" access-token-uri="https://www.vpsa.com.br/apps/oauth/token" user-authorization-uri="https://www.vpsa.com.br/apps/oauth/authorization" token-name="token" client-authentication-scheme="form" />
 	<!-- PROD VPSA UPLOADER INTERNO -->
 	<!-- <oauth:resource id="vpsa" type="authorization_code" client-id="51acb08170a7df4864000001" client-secret="98ddb62f75310717b99b380df676347907b23b0233fc719b852a15be5d799588" authentication-scheme="query" access-token-uri="https://www.vpsa.com.br/apps/oauth/token" user-authorization-uri="https://www.vpsa.com.br/apps/oauth/authorization" token-name="token" client-authentication-scheme="form" /> -->
 	<!-- QA VPSA UPLOADER-->
@@ -145,7 +145,8 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 	</bean>
 
 	<bean id="synchronizeService" class="br.com.catalagovpsa.service.SynchronizeServiceImpl">
-		<property name="productsList" value="${products.list}"></property>
+		<property name="productsList" value="${products.list}"/>
+		<property name="categorysList" value="${categorys.list}"/>  
 	</bean>
 
 	<bean name="productTask" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
