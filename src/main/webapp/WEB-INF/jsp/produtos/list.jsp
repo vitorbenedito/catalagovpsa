@@ -346,168 +346,44 @@
 					<li class="active">
 						<a href="index.html">
 							<i class="icon-dashboard"></i>
-							<span>Dashboard</span>
+							<span>Início</span>
 						</a>
 					</li>
-
-					<li>
-						<a href="typography.html">
-							<i class="icon-text-width"></i>
-							<span>Typography</span>
-						</a>
-					</li>
-
-					<li>
-						<a href="#" class="dropdown-toggle">
-							<i class="icon-desktop"></i>
-							<span>UI Elements</span>
-
-							<b class="arrow icon-angle-down"></b>
-						</a>
-
-						<ul class="submenu">
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Elements
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Buttons &amp; Icons
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Treeview
-								</a>
-							</li>
-						</ul>
-					</li>
-
-					<li>
-						<a href="#">
-							<i class="icon-list"></i>
-							<span>Tables</span>
-						</a>
-					</li>
-
-					<li>
-						<a href="#" class="dropdown-toggle">
-							<i class="icon-edit"></i>
-							<span>Forms</span>
-
-							<b class="arrow icon-angle-down"></b>
-						</a>
-
-						<ul class="submenu">
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Form Elements
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Wizard &amp; Validation
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Wysiwyg &amp; Markdown
-								</a>
-							</li>
-						</ul>
-					</li>
-
-					<li>
-						<a href="#">
-							<i class="icon-list-alt"></i>
-							<span>Widgets</span>
-						</a>
-					</li>
-
-					<li>
-						<a href="#">
-							<i class="icon-calendar"></i>
-							<span>Calendar</span>
-						</a>
-					</li>
-
-					<li>
-						<a href="#">
-							<i class="icon-picture"></i>
-							<span>Gallery</span>
-						</a>
-					</li>
-
-					<li>
-						<a href="#">
-							<i class="icon-th"></i>
-							<span>Grid</span>
-						</a>
-					</li>
-
-					<li>
-						<a href="#" class="dropdown-toggle">
-							<i class="icon-file"></i>
-							<span>Other Pages</span>
-
-							<b class="arrow icon-angle-down"></b>
-						</a>
-
-						<ul class="submenu">
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Pricing Tables
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Invoice
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Login &amp; Register
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Error 404
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Error 500
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-									<i class="icon-double-angle-right"></i>
-									Blank Page
-								</a>
-							</li>
-						</ul>
-					</li>
+					
+					<c:forEach items="${categorys}" var="entry" > 
+						<li>		
+							<c:choose>
+								<c:when test="${fn:length(entry.value) gt 0}">
+									<a href="#" class="dropdown-toggle">
+										<i class="icon-desktop"></i>
+										<span>${entry.key.description}</span>
+										<b class="arrow icon-angle-down"></b>
+									</a>
+									
+									<ul class="submenu">
+			                   		<c:forEach items="${entry.value}" var="valueListMap"> 
+			                        	<li>
+											<a href="#">
+												<i class="icon-double-angle-right"></i>
+													${valueListMap.description}
+											</a>
+										</li>
+			                   		</c:forEach> 
+			                   		</ul>									
+								</c:when>
+								<c:otherwise>
+									<li>
+										<a href="#">
+											<i class="icon-text-width"></i>
+											<span>${entry.key.description}</span>
+										</a>
+									</li>
+								</c:otherwise>
+							</c:choose>
+																								                   		
+						</li>
+          		   </c:forEach> 
+																
 				</ul><!--/.nav-list-->
 
 				<div id="sidebar-collapse">
