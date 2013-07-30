@@ -162,7 +162,7 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 	<bean id="productTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="productTask" />
 		<!-- execute cron each 2 hours -->
-		<property name="cronExpression" value="0 0/5 * * * ?" />
+		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean>
 
 	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

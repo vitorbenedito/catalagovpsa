@@ -27,5 +27,7 @@ public interface ProductRepository {
 	List<Product> filter(String cnpj, String string, int page);
 
 	long count(String cnpj);
+	
+	public Product getMax(String cnpj, Long categoryId);
 
 }

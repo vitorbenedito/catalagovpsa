@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -26,6 +28,18 @@ public class ProductRepositoryImpl implements ProductRepository {
 		template.save(product, COLLECTION_NAME);
 	}
 
+	public Product getMax(String cnpj, Long categoryId) {
+	
+		List<Product> list = template.find(new Query(Criteria.where("cnpj").is(cnpj).and("categoryId").is(categoryId)).with( new PageRequest(0,1,Direction.DESC,"controlId") ), Product.class, COLLECTION_NAME);
+		
+		if(list != null && list.size() > 0)
+		{
+			return list.get(0);
+		}
+		
+		return null;
+	}
+	
 	public Product get(String cnpj, Long productId) {
 		return template.findOne(new Query(Criteria.where("cnpj").is(cnpj).and("id").is(productId)), Product.class, COLLECTION_NAME);
 	}

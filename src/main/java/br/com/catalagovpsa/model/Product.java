@@ -1,7 +1,10 @@
 package br.com.catalagovpsa.model;
 
+
 public class Product {
 
+	private Long controlId = 0L;
+	
 	private Long id;
 
 	private String cnpj;
@@ -15,6 +18,10 @@ public class Product {
 	private String specification;
 
 	private String barCode;
+	
+	private Long categoryId;
+	
+	private String data = "01/01/1990 00:00:00";
 
 	public Long getId() {
 		return id;
@@ -87,5 +94,31 @@ public class Product {
 	public void setInternalCode(String internalCode) {
 		this.internalCode = internalCode;
 	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public Long getControlId() {
+		return controlId;
+	}
+
+	public void setControlId(Long controlId) {
+		this.controlId = controlId;
+	}
+	
+	
 
 }

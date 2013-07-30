@@ -74,32 +74,44 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 			Category category = categoryRepository.get(customer.getCnpj(), node.get("id").getLongValue());
 
 			if (category == null) {
-				category = new Category(node.get("id").getLongValue(), node.get("descricao").getTextValue(), customer.getCnpj());
+				category = new Category(node.get("id").getLongValue(), node.get("nome").getTextValue(), customer.getCnpj());
 			}
 
-			category.setDescription(node.get("descricao").getTextValue());
-			category.setBarCode(node.get("codigoBarras") != null ? node.get("codigoBarras").getTextValue() : null);
-			category.setSpecification(node.get("especificacao") != null ? node.get("especificacao").getTextValue() : null);
-			category.setSystemCode(node.get("codigoSistema") != null ? node.get("codigoSistema").getTextValue() : null);
-			category.setInternalCode(node.get("codigoInterno") != null ? node.get("codigoInterno").getTextValue() : null);
+			category.setDescription(node.get("nome").getTextValue());
+			category.setFatherId(node.get("pai") != null ? node.get("pai").getLongValue() : null);
 
 			categoryRepository.add(category);
+			
+			loadProducts(customer, category.getId(), 0);
 		}
 
 		loadCategorys(customer, begin + MAX_PRODUCTS_LIST_FROM_SERVICE);
 
 	}
 
-	private void loadProducts(Customer customer,Integer idCategory, Integer begin) throws RestClientException {
+	private void loadProducts(Customer customer,Long idCategory, Integer begin) throws RestClientException {
 
-		ArrayNode result = synchronizeTemplate.getForObject(MessageFormat.format("{0}?inicio={1}&quantidade={2}&token={3}", productsList, begin.toString(), MAX_PRODUCTS_LIST_FROM_SERVICE, customer.getToken()), ArrayNode.class);
+		
+		Product max = productRepository.getMax(customer.getCnpj(), idCategory);
+		
+		Long controleId = null;
+		
+		String alteradoApos = null;
+		
+		if(max != null)
+		{
+			controleId = max.getControlId();
+			alteradoApos = max.getData();
+		}
+		
+		ArrayNode result = synchronizeTemplate.getForObject(MessageFormat.format("{0}?inicio={1}&quantidade={2}&token={3}&categoria={4}&alteradoApos={5}", productsList, begin.toString(), MAX_PRODUCTS_LIST_FROM_SERVICE, customer.getToken(), idCategory,alteradoApos), ArrayNode.class);
 
 		if (result == null || result.size() == 0) {
 			return;
 		}
 
 		for (JsonNode node : result) {
-			Product product = productRepository.get(customer.getCnpj(), node.get("id").getLongValue());
+			Product product = productRepository.getMax(customer.getCnpj(), node.get("id").getLongValue());
 
 			if (product == null) {
 				product = new Product(node.get("id").getLongValue(), node.get("descricao").getTextValue(), customer.getCnpj());
@@ -110,6 +122,10 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 			product.setSpecification(node.get("especificacao") != null ? node.get("especificacao").getTextValue() : null);
 			product.setSystemCode(node.get("codigoSistema") != null ? node.get("codigoSistema").getTextValue() : null);
 			product.setInternalCode(node.get("codigoInterno") != null ? node.get("codigoInterno").getTextValue() : null);
+			product.setData(node.get("dataAlteracao") != null ? node.get("dataAlteracao").getTextValue() : null);
+			product.setCategoryId(idCategory);
+			
+			product.setControlId(++controleId);
 
 			productRepository.add(product);
 		}
@@ -132,6 +148,10 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 
 	public String getCategorysList() {
 		return categorysList;
+	}
+
+	public void setCategorysList(String categorysList) {
+		this.categorysList = categorysList;
 	}
 	
 
