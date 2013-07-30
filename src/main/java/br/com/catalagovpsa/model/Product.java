@@ -1,9 +1,11 @@
 package br.com.catalagovpsa.model;
 
+import java.util.Calendar;
 
-public class Product {
+import br.com.catalagovpsa.utils.ParametrosRest;
 
-	private Long controlId = 0L;
+
+public class Product {	
 	
 	private Long id;
 
@@ -21,7 +23,7 @@ public class Product {
 	
 	private Long categoryId;
 	
-	private String data = "01/01/1990 00:00:00";
+	private Long data;
 
 	public Long getId() {
 		return id;
@@ -103,22 +105,29 @@ public class Product {
 		this.categoryId = categoryId;
 	}
 
-	public String getData() {
+	public Long getData() {
 		return data;
 	}
+	
+	public Calendar getCalendar() {
+		if(data != null)
+		{
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(data);
+			return calendar;
+		}
+		return null;
+	}
+	
+	public String getAlteradoApos() {
+		if(getCalendar() != null)
+		{
+			return ParametrosRest.calendarToStringDataHora(getCalendar());
+		}
+		return "01/01/1990 00:00:00";
+	}
 
-	public void setData(String data) {
+	public void setData(Long data) {
 		this.data = data;
-	}
-
-	public Long getControlId() {
-		return controlId;
-	}
-
-	public void setControlId(Long controlId) {
-		this.controlId = controlId;
-	}
-	
-	
-
+	}	
 }

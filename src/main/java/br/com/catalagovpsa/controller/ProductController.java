@@ -2,7 +2,9 @@ package br.com.catalagovpsa.controller;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.com.catalagovpsa.model.Category;
 import br.com.catalagovpsa.model.Customer;
 import br.com.catalagovpsa.model.Product;
+import br.com.catalagovpsa.repository.interfaces.CategoryRepository;
 import br.com.catalagovpsa.repository.interfaces.ProductRepository;
 import br.com.catalagovpsa.service.interfaces.CustomerService;
 
@@ -25,12 +29,15 @@ public class ProductController {
 	private ProductRepository productRepository;
 	
 	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Autowired
 	private CustomerService customerService;
 	
 	@RequestMapping(value = "/adm")
 	public String index(Model model, HttpServletRequest request) throws Exception {
 
-    	Customer customer = customerService.getCustomer();
+    	Customer customer = customerService.getCustomer();    
     	
 		List<Product> products = new ArrayList<Product>();
 		int numberOfPages = productRepository.numberOfPages(customer.getCnpj());
@@ -61,6 +68,31 @@ public class ProductController {
     	
 	private String prepareView(Customer customer, List<Product> products, Integer numberOfPages, Integer currentPage, Model model, HttpServletRequest request) throws MalformedURLException {
 
+		List<Category> list = categoryRepository.all(customer.getCnpj());
+		
+		Map<Category,List<Category>> map = new HashMap<Category, List<Category>>();
+		
+		for(Category item: list)
+		{
+			if(item.getFatherId() == null)
+			{
+				List<Category> suns = new ArrayList<Category>();
+				
+				for(Category sun : list)
+				{
+					if(sun.getFatherId() != null && sun.getFatherId().equals(item.getId()))
+					{
+						suns.add(sun);
+					}
+				}
+								
+				map.put(item, suns);
+								
+			}
+		}
+		
+		
+		model.addAttribute("categorys", map);
 		model.addAttribute("products", products);
 		model.addAttribute("numberOfPages", numberOfPages);
 		model.addAttribute("currentPage", currentPage);

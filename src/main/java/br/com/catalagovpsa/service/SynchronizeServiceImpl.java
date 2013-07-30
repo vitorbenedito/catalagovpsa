@@ -19,6 +19,7 @@ import br.com.catalagovpsa.repository.interfaces.CategoryRepository;
 import br.com.catalagovpsa.repository.interfaces.ProductRepository;
 import br.com.catalagovpsa.repository.interfaces.SyncronizeRepository;
 import br.com.catalagovpsa.service.interfaces.SynchronizeService;
+import br.com.catalagovpsa.utils.ParametrosRest;
 
 
 @Transactional
@@ -78,7 +79,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 			}
 
 			category.setDescription(node.get("nome").getTextValue());
-			category.setFatherId(node.get("pai") != null ? node.get("pai").getLongValue() : null);
+			category.setFatherId(node.get("categoriaPai") != null ? node.get("categoriaPai").getLongValue() : null);
 
 			categoryRepository.add(category);
 			
@@ -92,16 +93,13 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	private void loadProducts(Customer customer,Long idCategory, Integer begin) throws RestClientException {
 
 		
-		Product max = productRepository.getMax(customer.getCnpj(), idCategory);
+		Product max = productRepository.getMax(customer.getCnpj(), idCategory);				
 		
-		Long controleId = null;
-		
-		String alteradoApos = null;
+		String alteradoApos = "01/01/1990 00:00:00";
 		
 		if(max != null)
-		{
-			controleId = max.getControlId();
-			alteradoApos = max.getData();
+		{			
+			alteradoApos = max.getAlteradoApos();
 		}
 		
 		ArrayNode result = synchronizeTemplate.getForObject(MessageFormat.format("{0}?inicio={1}&quantidade={2}&token={3}&categoria={4}&alteradoApos={5}", productsList, begin.toString(), MAX_PRODUCTS_LIST_FROM_SERVICE, customer.getToken(), idCategory,alteradoApos), ArrayNode.class);
@@ -122,10 +120,8 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 			product.setSpecification(node.get("especificacao") != null ? node.get("especificacao").getTextValue() : null);
 			product.setSystemCode(node.get("codigoSistema") != null ? node.get("codigoSistema").getTextValue() : null);
 			product.setInternalCode(node.get("codigoInterno") != null ? node.get("codigoInterno").getTextValue() : null);
-			product.setData(node.get("dataAlteracao") != null ? node.get("dataAlteracao").getTextValue() : null);
-			product.setCategoryId(idCategory);
-			
-			product.setControlId(++controleId);
+			product.setData(node.get("dataAlteracao") != null ? ParametrosRest.stringToCalendar( node.get("dataAlteracao").getTextValue()).getTimeInMillis() : null);
+			product.setCategoryId(idCategory);						
 
 			productRepository.add(product);
 		}
