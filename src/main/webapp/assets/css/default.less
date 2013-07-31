@@ -1,0 +1,88 @@
+@input-base-width:600px;
+@default-line-height: 30px;
+
+
+.form-field-columns(@factor){
+	width:(@input-base-width * @factor);
+	input[type="text"],
+	select
+	{
+		width:(@input-base-width * @factor) - 8;
+	}
+}
+
+
+.field{
+	width:auto;
+}
+
+.field-row .field{
+	display:inline-block;
+	line-height:100%;
+	vertical-align:top;
+	width:@input-base-width;
+	margin:-2px;
+}
+
+.field-row{
+	display: list-item;
+	list-style:none;
+}
+
+.field label,
+.field span{
+	padding: 5px 5px 0 0;
+	text-align: right;
+	vertical-align: top;
+	line-height:@default-line-height;
+	.display-row
+}
+
+.field input[type="text"],
+.field select{
+	.display-row;
+	padding:0;
+	padding-top:4px;
+	padding-bottom:4px;
+	padding-left:4px;
+}
+
+.field-row .field input[type="text"],
+.field-row .field select,
+.field-row .field {
+	width:(@input-base-width) - 8;
+}
+
+.field-row .field {
+	width:(@input-base-width) - 17;
+}
+
+.field-row .field.field-2-columns{
+	.form-field-columns(2);
+}
+
+.field-row .field.field-3-columns{
+	.form-field-columns(3);
+}
+
+.field-row .field.field-4-columns{
+	.form-field-columns(4);
+}
+
+.field-row .field.field-5-columns{
+	.form-field-columns(5);
+}
+
+.field-row .field.field-6-columns{
+	.form-field-columns(6);
+}
+
+.field-row .field.field-8-columns{
+	.form-field-columns(8);
+}
+
+.field-row{
+	max-width:100%;
+	width:inherit
+}
+

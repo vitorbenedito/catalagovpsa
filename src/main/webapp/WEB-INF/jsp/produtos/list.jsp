@@ -36,6 +36,9 @@
 		<link rel="stylesheet" href="<c:url value="/assets/themes/css/w8-skins.min.css"/>" />
 		
 		<link href="<c:url value="/assets/css/vpsa.css" />" rel="stylesheet" media="screen">
+				
+		<link id="theme" rel="stylesheet" type="text/css" media="all" href="<c:url value="/assets/css/default.less"></c:url>">
+		<script src="<c:url value="/assets/js/less-1.4.1.min.js" />" type="text/javascript"></script>
 
 		<!--[if lte IE 8]>
 		  <link rel="stylesheet" href="/assets/themes/css/ace-ie.min.css" />
@@ -451,20 +454,24 @@
 									<button type="submit" class="btn" onclick="submitSearch('<c:url value="/filter/" />');">Buscar</button>
 								</div>
 							</form>
-				
-							<ul class="nav nav-tabs">
-								<c:choose>
-									<c:when test="${fn:length(products) > 0}">
-										<c:forEach var="product" items="${products}">
-											<li><a class="link" href="<c:url value="/detail/${product.id}" />"><c:out value="${product.description}" /></a></li>
-										</c:forEach>
-									</c:when>
-									<c:when test="${fn:length(products) <= 0}">
-										<p>Realize uma busca para encontrar o produto desejado.</p>
-									</c:when>
-								</c:choose>
-							</ul>
-				
+							
+							<div class="field-row">
+								<div class="field field-3-columns">							
+											
+										<c:choose>
+											<c:when test="${fn:length(products) > 0}">
+												<c:forEach var="product" items="${products}">													
+														<!--  <a class="link" href="<c:url value="/detail/${product.id}" />"><c:out value="${product.description}" /></a>  -->
+														<input type="text" value="${product.description}"/>													
+												</c:forEach>
+											</c:when>
+											<c:when test="${fn:length(products) <= 0}">
+												<p>Realize uma busca para encontrar o produto desejado.</p>
+											</c:when>
+										</c:choose>	
+																										
+								</div>
+							</div>
 							<c:if test="${numberOfPages > 1 && fn:length(products) > 0}">
 								<div class="btn-group">
 					
@@ -524,6 +531,7 @@
 		<!--basic scripts-->
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		less-1.4.1.min.js
 		<script type="text/javascript">
 			window.jQuery || document.write("<script src='/catalagovpsa/assets/themes/js/jquery-1.9.1.min.js'>"+"<"+"/script>");
 		</script>
@@ -544,7 +552,7 @@
 		<script src="<c:url value="/assets/themes/js/w8-elements.min.js"/>"></script>
 		<script src="<c:url value="/assets/themes/js/w8.min.js"/>"></script>
 		
-		<script src="<c:url value="/assets/js/events.js" />"></script>
+		<script src="<c:url value="/assets/js/events.js" />"></script>				
 
 		<!--inline scripts related to this page-->
 
