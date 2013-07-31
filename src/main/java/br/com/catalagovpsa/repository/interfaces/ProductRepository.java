@@ -29,5 +29,7 @@ public interface ProductRepository {
 	long count(String cnpj);
 	
 	public Product getMax(String cnpj, Long categoryId);
+	
+	public List<Product> loadProductsByCategory(String cnpj, Long categoryId);
 
 }

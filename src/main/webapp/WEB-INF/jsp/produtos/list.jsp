@@ -354,7 +354,7 @@
 						<li>		
 							<c:choose>
 								<c:when test="${fn:length(entry.value) gt 0}">
-									<a href="#" class="dropdown-toggle">
+									<a href="<c:url value="/product/load/${entry.key.id}" />" class="dropdown-toggle" >
 										<i class="icon-desktop"></i>
 										<span>${entry.key.description}</span>
 										<b class="arrow icon-angle-down"></b>
@@ -363,7 +363,7 @@
 									<ul class="submenu">
 			                   		<c:forEach items="${entry.value}" var="valueListMap"> 
 			                        	<li>
-											<a href="#">
+											<a href="<c:url value="/product/load/${valueListMap.id}" />">
 												<i class="icon-double-angle-right"></i>
 													${valueListMap.description}
 											</a>
@@ -373,8 +373,8 @@
 								</c:when>
 								<c:otherwise>
 									<li>
-										<a href="#">
-											<i class="icon-text-width"></i>
+										<a href="<c:url value="/product/load/${entry.key.id}" />">
+											<i class="icon-text-width" ></i>
 											<span>${entry.key.description}</span>
 										</a>
 									</li>

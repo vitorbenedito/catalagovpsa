@@ -43,6 +43,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 	public Product get(String cnpj, Long productId) {
 		return template.findOne(new Query(Criteria.where("cnpj").is(cnpj).and("id").is(productId)), Product.class, COLLECTION_NAME);
 	}
+	
+	public List<Product> loadProductsByCategory(String cnpj, Long categoryId) {
+		return template.find(new Query(Criteria.where("cnpj").is(cnpj).and("categoryId").is(categoryId)), Product.class, COLLECTION_NAME);
+	}
 
 	public void delete(String cnpj, String id) {
 		Product file = template.findOne(new Query(Criteria.where("id").is(id)), Product.class, COLLECTION_NAME);

@@ -57,6 +57,16 @@ public class ProductController {
 		}		
 		return prepareView(customer, products, numberOfPages, page, model, request);
 	}
+	
+	@RequestMapping(value = "/product/load/{idCategory}")
+	public String load(@PathVariable Long idCategory, Model model, HttpServletRequest request) throws Exception {
+				
+		Customer customer = customerService.getCustomer();    
+		List<Product> products = productRepository.loadProductsByCategory(customer.getCnpj(),idCategory);
+	
+				
+		return prepareView(customer, products, 1, 0, model, request);
+	}
 		
 	@RequestMapping(value = "/detail/{id}")
 	public String details(@PathVariable Long id, Model model, HttpServletRequest request) throws Exception {
