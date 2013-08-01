@@ -64,6 +64,7 @@ public class ProductController {
 		Customer customer = customerService.getCustomer();    
 		List<Product> products = productRepository.loadProductsByCategory(customer.getCnpj(),idCategory);
 	
+		model.addAttribute("category", categoryRepository.get(customer.getCnpj(),idCategory));
 				
 		return prepareView(customer, products, 1, 0, model, request);
 	}
@@ -76,7 +77,7 @@ public class ProductController {
 		return "detail";
 	}
     	
-	private String prepareView(Customer customer, List<Product> products, Integer numberOfPages, Integer currentPage, Model model, HttpServletRequest request) throws MalformedURLException {
+	private String prepareView(Customer customer, List<Product> products, Integer numberOfPages, Integer currentPage, Model model, HttpServletRequest request) throws Exception {
 
 		List<Category> list = categoryRepository.all(customer.getCnpj());
 		
@@ -101,7 +102,7 @@ public class ProductController {
 			}
 		}
 		
-		
+		model.addAttribute("customer", customerService.getCustomer());
 		model.addAttribute("categorys", map);
 		model.addAttribute("products", products);
 		model.addAttribute("numberOfPages", numberOfPages);

@@ -7,7 +7,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Dashboard - W8 Admin</title>
+		<title>Catálago de Produtos - Painel de Administração</title>
 		<meta name="description" content="This is page-header (.page-header &gt; h1)" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -36,9 +36,6 @@
 		<link rel="stylesheet" href="<c:url value="/assets/themes/css/w8-skins.min.css"/>" />
 		
 		<link href="<c:url value="/assets/css/vpsa.css" />" rel="stylesheet" media="screen">
-				
-		<link id="theme" rel="stylesheet" type="text/css" media="all" href="<c:url value="/assets/css/default.less"></c:url>">
-		<script src="<c:url value="/assets/js/less-1.4.1.min.js" />" type="text/javascript"></script>
 
 		<!--[if lte IE 8]>
 		  <link rel="stylesheet" href="/assets/themes/css/ace-ie.min.css" />
@@ -54,226 +51,19 @@
 					<a href="#" class="brand">
 						<small>
 							<i class="icon-unlock-alt"></i>
-							W8 Admin
+							Catálago de Produtos - Painel de Administração
 						</small>
 					</a><!--/.brand-->
 
 					<ul class="nav ace-nav pull-right">
-						<li class="grey">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="icon-tasks"></i>
-								<span class="badge badge-grey">4</span>
-							</a>
-
-							<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-closer">
-								<li class="nav-header">
-									<i class="icon-ok"></i>
-									4 Tasks to complete
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">Software Update</span>
-											<span class="pull-right">65%</span>
-										</div>
-
-										<div class="progress progress-mini ">
-											<div style="width:65%" class="bar"></div>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">Hardware Upgrade</span>
-											<span class="pull-right">35%</span>
-										</div>
-
-										<div class="progress progress-mini progress-danger">
-											<div style="width:35%" class="bar"></div>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">Unit Testing</span>
-											<span class="pull-right">15%</span>
-										</div>
-
-										<div class="progress progress-mini progress-warning">
-											<div style="width:15%" class="bar"></div>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">Bug Fixes</span>
-											<span class="pull-right">90%</span>
-										</div>
-
-										<div class="progress progress-mini progress-success progress-striped active">
-											<div style="width:90%" class="bar"></div>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										See tasks with details
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li>
-
-						<li class="purple">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="icon-bell-alt icon-only icon-animated-bell"></i>
-								<span class="badge badge-important">8</span>
-							</a>
-
-							<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-closer">
-								<li class="nav-header">
-									<i class="icon-warning-sign"></i>
-									8 Notifications
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-mini no-hover btn-pink icon-comment"></i>
-												New Comments
-											</span>
-											<span class="pull-right badge badge-info">+12</span>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<i class="btn btn-mini btn-primary icon-user"></i>
-										Bob just signed up as an editor ...
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-mini no-hover btn-success icon-shopping-cart"></i>
-												New Orders
-											</span>
-											<span class="pull-right badge badge-success">+8</span>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-mini no-hover btn-info icon-twitter"></i>
-												Followers
-											</span>
-											<span class="pull-right badge badge-info">+11</span>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										See all notifications
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li>
-
-						<li class="green">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="icon-envelope-alt icon-only icon-animated-vertical"></i>
-								<span class="badge badge-success">5</span>
-							</a>
-
-							<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-closer">
-								<li class="nav-header">
-									<i class="icon-envelope"></i>
-									5 Messages
-								</li>
-
-								<li>
-									<a href="#">
-										<img src="themes/images/avatar.png" class="msg-photo" alt="Alex's Avatar" />
-										<span class="msg-body">
-											<span class="msg-title">
-												<span class="blue">Alex:</span>
-												Ciao sociis natoque penatibus et auctor ...
-											</span>
-
-											<span class="msg-time">
-												<i class="icon-time"></i>
-												<span>a moment ago</span>
-											</span>
-										</span>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<img src="themes/images/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
-										<span class="msg-body">
-											<span class="msg-title">
-												<span class="blue">Susan:</span>
-												Vestibulum id ligula porta felis euismod ...
-											</span>
-
-											<span class="msg-time">
-												<i class="icon-time"></i>
-												<span>20 minutes ago</span>
-											</span>
-										</span>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<img src="themes/images/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
-										<span class="msg-body">
-											<span class="msg-title">
-												<span class="blue">Bob:</span>
-												Nullam quis risus eget urna mollis ornare ...
-											</span>
-
-											<span class="msg-time">
-												<i class="icon-time"></i>
-												<span>3:15 pm</span>
-											</span>
-										</span>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										See all messages
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li>
+						
 
 						<li class="light-blue user-profile">
 							<a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle">
-								<img class="nav-user-photo" src="themes/images/user.png" alt="Jason's Photo" />
+								<img class="nav-user-photo" src="<c:url value="/assets/themes/images/user.png"/>" alt="Jason's Photo" />
 								<span id="user_info">
-									<small>Welcome,</small>
-									Jason
+									<small>Seja bem vindo,</small>
+									${customer.login}
 								</span>
 
 								<i class="icon-caret-down"></i>
@@ -283,14 +73,14 @@
 								<li>
 									<a href="#">
 										<i class="icon-cog"></i>
-										Settings
+										Configuração
 									</a>
 								</li>
 
 								<li>
 									<a href="#">
 										<i class="icon-user"></i>
-										Profile
+										Perfil
 									</a>
 								</li>
 
@@ -299,7 +89,7 @@
 								<li>
 									<a href="#">
 										<i class="icon-off"></i>
-										Logout
+										Sair
 									</a>
 								</li>
 							</ul>
@@ -399,13 +189,13 @@
 					<ul class="breadcrumb">
 						<li>
 							<i class="icon-home"></i>
-							<a href="#">Home</a>
+							<a href="#">Início</a>
 
 							<span class="divider">
 								<i class="icon-angle-right"></i>
 							</span>
 						</li>
-						<li class="active">Dashboard</li>
+						<li class="active">Produtos</li>
 					</ul><!--.breadcrumb-->
 
 					<div id="nav-search">
@@ -421,10 +211,12 @@
 				<div id="page-content" class="clearfix">
 					<div class="page-header position-relative">
 						<h1>
-							Dashboard
+							Produtos
 							<small>
 								<i class="icon-double-angle-right"></i>
-								overview &amp; stats
+								${category.description}
+								<i class="icon-double-angle-right"></i>
+								Listagem de produtos
 							</small>
 						</h1>
 					</div><!--/.page-header-->
@@ -439,10 +231,10 @@
 
 							<i class="icon-ok green"></i>
 
-							Welcome to
+							Seja bem vindo ao
 							<strong class="green">
-								W8
-								<small>(v1.0)</small></strong>, the lightweight, feature-rich, easy to use and well-documented admin template.
+								Catálago VPSA
+								<small>(v1.0)</small></strong>, aqui você pode pesquisar os produtos e alterar as informações que serão exibidas ao cliente.
 						</div>
 
 						<div class="space-6"></div>
@@ -454,24 +246,31 @@
 									<button type="submit" class="btn" onclick="submitSearch('<c:url value="/filter/" />');">Buscar</button>
 								</div>
 							</form>
-							
-							<div class="field-row">
-								<div class="field field-3-columns">							
-											
-										<c:choose>
-											<c:when test="${fn:length(products) > 0}">
-												<c:forEach var="product" items="${products}">													
-														<!--  <a class="link" href="<c:url value="/detail/${product.id}" />"><c:out value="${product.description}" /></a>  -->
-														<input type="text" value="${product.description}"/>													
-												</c:forEach>
-											</c:when>
-											<c:when test="${fn:length(products) <= 0}">
-												<p>Realize uma busca para encontrar o produto desejado.</p>
-											</c:when>
-										</c:choose>	
-																										
-								</div>
-							</div>
+
+							<c:choose>
+								<c:when test="${fn:length(products) > 0}">
+									
+									<c:forEach var="product" items="${products}">		
+										
+							    			<div class="span3">			
+												
+											    	<img src="<c:url value="/assets/img/tv.jpg" />" />
+											    	<p>
+										
+											    		<a class="link" href="<c:url value="/detail/${product.id}" />"><c:out value="${product.description}" /></a>  								
+												  		
+													</p>
+												
+											</div>
+																			
+									</c:forEach>
+									
+								</c:when>
+								<c:when test="${fn:length(products) <= 0}">
+									<p>Realize uma busca para encontrar o produto desejado.</p>
+								</c:when>
+							</c:choose>	
+
 							<c:if test="${numberOfPages > 1 && fn:length(products) > 0}">
 								<div class="btn-group">
 					
@@ -531,7 +330,7 @@
 		<!--basic scripts-->
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		less-1.4.1.min.js
+		
 		<script type="text/javascript">
 			window.jQuery || document.write("<script src='/catalagovpsa/assets/themes/js/jquery-1.9.1.min.js'>"+"<"+"/script>");
 		</script>
@@ -556,178 +355,6 @@
 
 		<!--inline scripts related to this page-->
 
-		<script type="text/javascript">
-			$(function() {
-			
-				$('.dialogs,.comments').slimScroll({
-			        height: '300px'
-			    });
-				
-				$('#tasks').sortable();
-				$('#tasks').disableSelection();
-				$('#tasks input:checkbox').removeAttr('checked').on('click', function(){
-					if(this.checked) $(this).closest('li').addClass('selected');
-					else $(this).closest('li').removeClass('selected');
-				});
-			
-				var oldie = $.browser.msie && $.browser.version < 9;
-				$('.easy-pie-chart.percentage').each(function(){
-					var $box = $(this).closest('.infobox');
-					var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
-					var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
-					var size = parseInt($(this).data('size')) || 50;
-					$(this).easyPieChart({
-						barColor: barColor,
-						trackColor: trackColor,
-						scaleColor: false,
-						lineCap: 'butt',
-						lineWidth: parseInt(size/10),
-						animate: oldie ? false : 1000,
-						size: size
-					});
-				})
-			
-				$('.sparkline').each(function(){
-					var $box = $(this).closest('.infobox');
-					var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
-					$(this).sparkline('html', {tagValuesAttribute:'data-values', type: 'bar', barColor: barColor , chartRangeMin:$(this).data('min') || 0} );
-				});
-			
-			
-			
-			
-			  var data = [
-				{ label: "social networks",  data: 38.7, color: "#68BC31"},
-				{ label: "search engines",  data: 24.5, color: "#2091CF"},
-				{ label: "ad campaings",  data: 8.2, color: "#AF4E96"},
-				{ label: "direct traffic",  data: 18.6, color: "#DA5430"},
-				{ label: "other",  data: 10, color: "#FEE074"}
-			  ];
-			
-			  var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
-			  $.plot(placeholder, data, {
-				
-				series: {
-			        pie: {
-			            show: true,
-						tilt:0.8,
-						highlight: {
-							opacity: 0.25
-						},
-						stroke: {
-							color: '#fff',
-							width: 2
-						},
-						startAngle: 2
-						
-			        }
-			    },
-			    legend: {
-			        show: true,
-					position: "ne", 
-				    labelBoxBorderColor: null,
-					margin:[-30,15]
-			    }
-				,
-				grid: {
-					hoverable: true,
-					clickable: true
-				},
-				tooltip: true, //activate tooltip
-				tooltipOpts: {
-					content: "%s : %y.1",
-					shifts: {
-						x: -30,
-						y: -50
-					}
-				}
-				
-			 });
-			
-			 
-			  var $tooltip = $("<div class='tooltip top in' style='display:none;'><div class='tooltip-inner'></div></div>").appendTo('body');
-			  placeholder.data('tooltip', $tooltip);
-			  var previousPoint = null;
-			
-			  placeholder.on('plothover', function (event, pos, item) {
-				if(item) {
-					if (previousPoint != item.seriesIndex) {
-						previousPoint = item.seriesIndex;
-						var tip = item.series['label'] + " : " + item.series['percent']+'%';
-						$(this).data('tooltip').show().children(0).text(tip);
-					}
-					$(this).data('tooltip').css({top:pos.pageY + 10, left:pos.pageX + 10});
-				} else {
-					$(this).data('tooltip').hide();
-					previousPoint = null;
-				}
-				
-			 });
-			
-			
-			
-			
-			
-			
-				var d1 = [];
-				for (var i = 0; i < Math.PI * 2; i += 0.5) {
-					d1.push([i, Math.sin(i)]);
-				}
-			
-				var d2 = [];
-				for (var i = 0; i < Math.PI * 2; i += 0.5) {
-					d2.push([i, Math.cos(i)]);
-				}
-			
-				var d3 = [];
-				for (var i = 0; i < Math.PI * 2; i += 0.2) {
-					d3.push([i, Math.tan(i)]);
-				}
-				
-			
-				var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'220px'});
-				$.plot("#sales-charts", [
-					{ label: "Domains", data: d1 },
-					{ label: "Hosting", data: d2 },
-					{ label: "Services", data: d3 }
-				], {
-					hoverable: true,
-					shadowSize: 0,
-					series: {
-						lines: { show: true },
-						points: { show: true }
-					},
-					xaxis: {
-						tickLength: 0
-					},
-					yaxis: {
-						ticks: 10,
-						min: -2,
-						max: 2,
-						tickDecimals: 3
-					},
-					grid: {
-						backgroundColor: { colors: [ "#fff", "#fff" ] },
-						borderWidth: 1,
-						borderColor:'#555'
-					}
-				});
-			
-			
-				$('#recent-box [data-rel="tooltip"]').tooltip({plw8ment: tooltip_plw8ment});
-				function tooltip_plw8ment(context, source) {
-					var $source = $(source);
-					var $parent = $source.closest('.tab-content')
-					var off1 = $parent.offset();
-					var w1 = $parent.width();
-			
-					var off2 = $source.offset();
-					var w2 = $source.width();
-			
-					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-					return 'left';
-				}
-			})
-		</script>
+		
 	</body>
 </html>

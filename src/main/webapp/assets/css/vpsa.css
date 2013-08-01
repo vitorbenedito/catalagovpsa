@@ -249,4 +249,9 @@ border-radius: 0 5px 5px 0;
 	.container{
 		font-size:0.5em;
 	}
+	.thumbnail{
+		border: none;
+	}
+	
 }
+
