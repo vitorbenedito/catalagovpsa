@@ -26,12 +26,7 @@
 
 	<section>
 		<form>
-		 	<figure>
-				<img alt="vpsa-logo" src="<c:url value="/assets/img/logo.png"/>" width="451" height="91">
-				<figcaption>
-					logo vpsa
-				</figcaption>
-			</figure>
+		 	<caption></caption>
 			
 			<center>
 				<br><br>

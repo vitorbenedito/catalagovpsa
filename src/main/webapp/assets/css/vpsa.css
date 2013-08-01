@@ -251,7 +251,21 @@ border-radius: 0 5px 5px 0;
 	}
 	.thumbnail{
 		border: none;
-	}
+	}		
 	
 }
 
+
+.row-fluid .thumbnails .span3 {
+     width:30%;
+     margin-left: 2%;        
+     float:left;    
+     text-align: center;
+}
+.row-fluid .thumbnails .span3:nth-child(2n+1) {
+     margin-left: 10;     
+}
+
+.thumbnail{
+		border: none;
+	}	
