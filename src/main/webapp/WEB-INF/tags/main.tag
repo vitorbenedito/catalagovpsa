@@ -2,11 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<%@ attribute name="title" required="false" %>
+<%@ attribute name="selectedItem" required="false" %>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Catálago de Produtos - Painel de Administração</title>
+		<title>Catálago VPSA - <%=title != null ? "| " + title : "" %></title>		
 		<meta name="description" content="This is page-header (.page-header &gt; h1)" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -49,7 +52,7 @@
 				<div class="container-fluid">
 					<a href="#" class="brand">
 						<small>
-							<i class="icon-unlock-alt"></i>
+							<i class="icon-unlock-alt"></i>							
 							Catálago de Produtos - Painel de Administração
 						</small>
 					</a><!--/.brand-->
@@ -136,45 +139,76 @@
 
 				<ul class="nav nav-list">
 					<li class="active">
-						<a href="index.html">
+					<a href="<c:url value="/adm/"/>">
 							<i class="icon-dashboard"></i>
 							<span>Início</span>
 						</a>
 					</li>
-					
-					<c:forEach items="${categorys}" var="entry" > 
-						<li>		
-							<c:choose>
-								<c:when test="${fn:length(entry.value) gt 0}">
-									<a href="<c:url value="/product/load/${entry.key.id}" />" class="dropdown-toggle" >
-										<i class="icon-desktop"></i>
-										<span>${entry.key.description}</span>
-										<b class="arrow icon-angle-down"></b>
-									</a>
-									
-									<ul class="submenu">
-			                   		<c:forEach items="${entry.value}" var="valueListMap"> 
-			                        	<li>
-											<a href="<c:url value="/product/load/${valueListMap.id}" />">
-												<i class="icon-double-angle-right"></i>
-													${valueListMap.description}
+					 
+					<c:choose>
+						<c:when test="${fn:length(categorys) > 0}">
+							<c:forEach items="${categorys}" var="entry" > 
+								<li>		
+									<c:choose>
+										<c:when test="${fn:length(entry.value) gt 0}">
+											<a href="<c:url value="/adm/product/load/${entry.key.id}" />" class="dropdown-toggle" >
+												<i class="icon-desktop"></i>
+												<span>${entry.key.description}</span>
+												<b class="arrow icon-angle-down"></b>
 											</a>
-										</li>
-			                   		</c:forEach> 
-			                   		</ul>									
-								</c:when>
-								<c:otherwise>
-									<li>
-										<a href="<c:url value="/product/load/${entry.key.id}" />">
-											<i class="icon-text-width" ></i>
-											<span>${entry.key.description}</span>
-										</a>
-									</li>
-								</c:otherwise>
-							</c:choose>
-																								                   		
-						</li>
-          		   </c:forEach> 
+											
+											<ul class="submenu">
+					                   		<c:forEach items="${entry.value}" var="valueListMap"> 
+					                        	<li>
+													<a href="<c:url value="/adm/product/load/${valueListMap.id}" />">
+														<i class="icon-double-angle-right"></i>
+															${valueListMap.description}
+													</a>
+												</li>
+					                   		</c:forEach> 
+					                   		</ul>									
+										</c:when>
+										<c:otherwise>
+											<li>
+												<a href="<c:url value="/adm/product/load/${entry.key.id}" />">
+													<i class="icon-text-width" ></i>
+													<span>${entry.key.description}</span>
+												</a>
+											</li>
+										</c:otherwise>
+									</c:choose>
+																										                   		
+								</li>
+		          		   </c:forEach> 
+          		  		</c:when>
+          		  		<c:otherwise>	          		  		
+							<li>
+								<a href="<c:url value="/adm/product/" />">
+									<i class="icon-text-width" ></i>
+									<span>Produtos</span>
+								</a>
+							</li>
+							<li>
+								<a href="<c:url value="/config/" />">
+									<i class="icon-cogs" ></i>
+									<span>Configuração</span>
+								</a>
+							</li>
+							<li>
+								<a href="<c:url value="/product/" />">
+									<i class="icon-text-width" ></i>
+									<span>Ajuda</span>
+								</a>
+							</li>
+							<li>
+								<a href="<c:url value="/product/" />">
+									<i class="icon-text-width" ></i>
+									<span>Contato</span>
+								</a>
+							</li>
+          		  		</c:otherwise>
+          		  	</c:choose>
+          		  	
 																
 				</ul><!--/.nav-list-->
 
@@ -188,13 +222,19 @@
 					<ul class="breadcrumb">
 						<li>
 							<i class="icon-home"></i>
-							<a href="#">Início</a>
+							<a href="<c:url value="/adm/"/>" >Início</a>
 
 							<span class="divider">
 								<i class="icon-angle-right"></i>
 							</span>
-						</li>
-						<li class="active">Produtos</li>
+						</li>						
+						<li class="<%= selectedItem == null ? "active" : "" %>">${title}</li>	
+						<c:if test="${not empty selectedItem}">		
+							<span class="divider">
+								<i class="icon-angle-right"></i>
+							</span>									
+							<li class="active">${selectedItem}</li>
+						</c:if>
 					</ul><!--.breadcrumb-->
 
 					<div id="nav-search">
@@ -208,18 +248,7 @@
 				</div>
 
 				<div id="page-content" class="clearfix">
-					<div class="page-header position-relative">
-						<h1>
-							Produtos
-							<small>
-								<i class="icon-double-angle-right"></i>
-								${category.description}
-								<i class="icon-double-angle-right"></i>
-								Listagem de produtos
-							</small>
-						</h1>
-					</div><!--/.page-header-->
-
+					
 					<div class="row-fluid">
 						<!--PAGE CONTENT BEGINS HERE-->
 
@@ -243,12 +272,13 @@
 						</section>
 						
 						<div id="loading" class="loading hide"><img width="220px" height="19px" alt="loading" src="<c:url value="/assets/img/ajax-loader.gif" />"></div>
+												
 						
 					</div><!--/row-->
 
 						<!--PAGE CONTENT ENDS HERE-->
 					</div><!--/row-->
-				</div><!--/#page-content-->
+				</div><!--/#page-content-->								
 
 				<div id="ace-settings-container">
 					<div class="btn btn-app btn-mini btn-warning" id="ace-settings-btn">
@@ -279,7 +309,7 @@
 						</div>
 					</div>
 				</div><!--/#ace-settings-container-->
-			</div><!--/#main-content-->		
+			</div><!--/#main-content-->								
 
 		<a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse">
 			<i class="icon-double-angle-up icon-only bigger-110"></i>
