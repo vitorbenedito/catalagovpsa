@@ -3,14 +3,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="custom" %>
 
-<custom:main>
+<custom:main title="Listagem de Produtos" selectedItem="${category.description}">
 	<div class="form-search">
 		<div class="input-append">
 		<button type="button" class="btn" >Buscar</button>
 			<input type="text" id="search" class="input-large search-query span2"
 				type="text" />
 		</div>	
-	</div>
+	</div> 
 	<c:choose>
 		<c:when test="${fn:length(products) > 0}">
 			<div class="row-fluid">

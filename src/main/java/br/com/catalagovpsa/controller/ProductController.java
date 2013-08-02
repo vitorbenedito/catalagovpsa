@@ -1,6 +1,5 @@
 package br.com.catalagovpsa.controller;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +22,7 @@ import br.com.catalagovpsa.repository.interfaces.ProductRepository;
 import br.com.catalagovpsa.service.interfaces.CustomerService;
 
 @Controller("productController")
+@RequestMapping("/adm/product")
 public class ProductController {    
 
 	@Autowired
@@ -34,7 +34,7 @@ public class ProductController {
 	@Autowired
 	private CustomerService customerService;
 	
-	@RequestMapping(value = "/adm")
+	@RequestMapping(value = "/")
 	public String index(Model model, HttpServletRequest request) throws Exception {
 
     	Customer customer = customerService.getCustomer();    
@@ -58,7 +58,7 @@ public class ProductController {
 		return prepareView(customer, products, numberOfPages, page, model, request);
 	}
 	
-	@RequestMapping(value = "/product/load/{idCategory}")
+	@RequestMapping(value = "/load/{idCategory}")
 	public String load(@PathVariable Long idCategory, Model model, HttpServletRequest request) throws Exception {
 				
 		Customer customer = customerService.getCustomer();    
