@@ -27,10 +27,6 @@
 
 		<link rel="stylesheet" href="<c:url value="/assets/themes/css/prettify.css"/>" />
 
-		<!--fonts-->
-
-		<link rel="stylesheet" href="<c:url value="http://fonts.googleapis.com/css?family=Open+Sans:400,300"/>" />
-
 		<!--ace styles-->
 
 		<link rel="stylesheet" href="<c:url value="/assets/themes/css/w8.min.css"/>" />
@@ -317,8 +313,6 @@
 
 		<!--basic scripts-->
 
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		
 		<script type="text/javascript">
 			window.jQuery || document.write("<script src='/catalagovpsa/assets/themes/js/jquery-1.9.1.min.js'>"+"<"+"/script>");
 		</script>

@@ -120,7 +120,8 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 			product.setSpecification(node.get("especificacao") != null ? node.get("especificacao").getTextValue() : null);
 			product.setSystemCode(node.get("codigoSistema") != null ? node.get("codigoSistema").getTextValue() : null);
 			product.setInternalCode(node.get("codigoInterno") != null ? node.get("codigoInterno").getTextValue() : null);
-			product.setData(node.get("dataAlteracao") != null ? ParametrosRest.stringToCalendar( node.get("dataAlteracao").getTextValue()).getTimeInMillis() : null);
+			product.setDate(node.get("dataAlteracao") != null ? ParametrosRest.stringToCalendar( node.get("dataAlteracao").getTextValue()).getTimeInMillis() : null);
+			product.setSellingPrice(node.get("precoVenda") != null ? node.get("precoVenda").getDecimalValue() : null);
 			product.setCategoryId(idCategory);						
 
 			productRepository.add(product);

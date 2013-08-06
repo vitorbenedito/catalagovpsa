@@ -1,5 +1,6 @@
 package br.com.catalagovpsa.model;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import br.com.catalagovpsa.utils.ParametrosRest;
@@ -23,7 +24,9 @@ public class Product {
 	
 	private Long categoryId;
 	
-	private Long data;
+	private BigDecimal sellingPrice;
+	
+	private Long date;
 
 	public Long getId() {
 		return id;
@@ -105,15 +108,15 @@ public class Product {
 		this.categoryId = categoryId;
 	}
 
-	public Long getData() {
-		return data;
+	public Long getDate() {
+		return date;
 	}
 	
 	public Calendar getCalendar() {
-		if(data != null)
+		if(date != null)
 		{
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(data);
+			calendar.setTimeInMillis(date);
 			return calendar;
 		}
 		return null;
@@ -127,7 +130,16 @@ public class Product {
 		return "01/01/1990 00:00:00";
 	}
 
-	public void setData(Long data) {
-		this.data = data;
+	public void setDate(Long date) {
+		this.date = date;
+	}
+
+	public BigDecimal getSellingPrice() {
+		return sellingPrice;
+	}
+
+	public void setSellingPrice(BigDecimal sellingPrice) {
+		this.sellingPrice = sellingPrice;
 	}	
+	
 }

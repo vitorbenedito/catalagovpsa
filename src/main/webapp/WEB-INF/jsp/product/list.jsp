@@ -19,7 +19,7 @@
 						<li class="span3"><img
 							src="<c:url value="/assets/img/tv.jpg" />" />
 							<p>
-								<a class="link" href="<c:url value="/detail/${product.id}" />"><c:out
+								<a class="link" href="<c:url value="/adm/product/detail/${product.id}" />"><c:out
 										value="${product.description}" /></a>
 							</p></li>
 					</c:forEach>

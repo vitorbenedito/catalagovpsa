@@ -74,7 +74,7 @@ public class ProductController {
 		Customer customer = customerService.getCustomer();
 		Product product = productRepository.get(customer.getCnpj(), id);
 		model.addAttribute("product", product);		
-		return "detail";
+		return "/product/detail";
 	}
     	
 	private String prepareView(Customer customer, List<Product> products, Integer numberOfPages, Integer currentPage, Model model, HttpServletRequest request) throws Exception {
@@ -114,7 +114,7 @@ public class ProductController {
 			model.addAttribute("product", products.get(0));
 		}
 
-		return "/produtos/list";
+		return "/product/list";
 	}
 		
 }

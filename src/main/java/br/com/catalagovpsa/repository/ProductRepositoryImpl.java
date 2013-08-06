@@ -30,7 +30,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
 	public Product getMax(String cnpj, Long categoryId) {
 	
-		List<Product> list = template.find(new Query(Criteria.where("cnpj").is(cnpj).and("categoryId").is(categoryId)).with( new PageRequest(0,1,Direction.DESC,"data") ), Product.class, COLLECTION_NAME);
+		List<Product> list = template.find(new Query(Criteria.where("cnpj").is(cnpj).and("categoryId").is(categoryId)).with( new PageRequest(0,1,Direction.DESC,"date") ), Product.class, COLLECTION_NAME);
 		
 		if(list != null && list.size() > 0)
 		{
