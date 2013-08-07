@@ -74,11 +74,28 @@ public class ProductController {
 		Customer customer = customerService.getCustomer();
 		Product product = productRepository.get(customer.getCnpj(), id);
 		model.addAttribute("product", product);		
+		model.addAttribute("categorys", getCategorys(customer));
 		return "/product/detail";
 	}
     	
 	private String prepareView(Customer customer, List<Product> products, Integer numberOfPages, Integer currentPage, Model model, HttpServletRequest request) throws Exception {
+				
+		model.addAttribute("customer", customerService.getCustomer());
+		model.addAttribute("categorys", getCategorys(customer));
+		model.addAttribute("products", products);
+		model.addAttribute("numberOfPages", numberOfPages);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("prevPage", (currentPage > 1 && numberOfPages > 1) ? currentPage - 1 : 1);
+		model.addAttribute("nextPage", (currentPage > 1 && numberOfPages > 1) ? currentPage + 1 : 2);
 
+		if (products.size() > 0) {
+			model.addAttribute("product", products.get(0));
+		}
+
+		return "/product/list";
+	}
+
+	private Map<Category, List<Category>> getCategorys(Customer customer) {
 		List<Category> list = categoryRepository.all(customer.getCnpj());
 		
 		Map<Category,List<Category>> map = new HashMap<Category, List<Category>>();
@@ -101,20 +118,7 @@ public class ProductController {
 								
 			}
 		}
-		
-		model.addAttribute("customer", customerService.getCustomer());
-		model.addAttribute("categorys", map);
-		model.addAttribute("products", products);
-		model.addAttribute("numberOfPages", numberOfPages);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("prevPage", (currentPage > 1 && numberOfPages > 1) ? currentPage - 1 : 1);
-		model.addAttribute("nextPage", (currentPage > 1 && numberOfPages > 1) ? currentPage + 1 : 2);
-
-		if (products.size() > 0) {
-			model.addAttribute("product", products.get(0));
-		}
-
-		return "/product/list";
+		return map;
 	}
 		
 }

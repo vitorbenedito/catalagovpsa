@@ -5,31 +5,37 @@
 
 <custom:main title="Detalhe" selectedItem="${product.description}">
 
-	<form>
-		<fieldset>
-			<legend>Legend</legend>
-			<div class="form-group">
-				<label for="exampleInputEmail">Email address</label> <input
-					type="text" class="form-control" id="exampleInputEmail"
-					placeholder="Enter email">
-			</div>
-			<div class="form-group">
-				<label for="exampleInputPassword">Password</label> <input
-					type="password" class="form-control" id="exampleInputPassword"
-					placeholder="Password">
-			</div>
-			<div class="form-group">
-				<label for="exampleInputFile">File input</label> <input type="file"
-					id="exampleInputFile">
-				<p class="help-block">Example block-level help text here.</p>
-			</div>
-			<div class="checkbox">
-				<label> <input type="checkbox"> Check me out
-				</label>
-			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
-		</fieldset>
-	</form>
 
+	<form>
+		
+			<legend>Alteração produto</legend>																					
+						
+			<div class="form-group">		
+				<div class="radio">																										
+					<label >						
+						Descrição VPSA										
+						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+					</label>					
+				</div>										
+				<textarea id="description_vpsa" rows="4" readonly="readonly" >
+					${product.description}
+				</textarea>
+			</div>
+			<div class="form-group">			
+				<div class="radio">																										
+					<label >						
+						Descrição										
+						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+					</label>					
+				</div>					 
+				<textarea class="form-control" id="description" rows="4" >
+					${product.description}
+				</textarea>
+			</div>
+						
+			<button type="submit" class="btn btn-default">Salvar</button>
+		
+	</form>
+ 
 </custom:main>
 

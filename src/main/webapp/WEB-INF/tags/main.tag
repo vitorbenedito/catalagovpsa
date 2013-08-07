@@ -246,20 +246,7 @@
 				<div id="page-content" class="clearfix">
 					
 					<div class="row-fluid">
-						<!--PAGE CONTENT BEGINS HERE-->
-
-						<div class="alert alert-block alert-success">
-							<button type="button" class="close" data-dismiss="alert">
-								<i class="icon-remove"></i>
-							</button>
-
-							<i class="icon-ok green"></i>
-
-							Seja bem vindo ao
-							<strong class="green">
-								Catálago VPSA
-								<small>(v1.0)</small></strong>, aqui você pode pesquisar os produtos e alterar as informações que serão exibidas ao cliente.
-						</div>
+						<!--PAGE CONTENT BEGINS HERE-->						
 
 						<div class="space-6"></div>
 	
