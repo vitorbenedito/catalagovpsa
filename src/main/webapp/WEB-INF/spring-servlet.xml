@@ -147,6 +147,7 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 	<bean id="synchronizeService" class="br.com.catalagovpsa.service.SynchronizeServiceImpl">
 		<property name="productsList" value="${products.list}"/>
 		<property name="categorysList" value="${categorys.list}"/>  
+		<property name="productPhotos" value="${product.photos}"/>
 	</bean>
 
 	<bean name="productTask" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">

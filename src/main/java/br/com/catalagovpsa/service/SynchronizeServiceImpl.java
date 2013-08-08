@@ -14,8 +14,11 @@ import org.springframework.web.client.RestOperations;
 
 import br.com.catalagovpsa.model.Category;
 import br.com.catalagovpsa.model.Customer;
+import br.com.catalagovpsa.model.MetaFile;
 import br.com.catalagovpsa.model.Product;
+import br.com.catalagovpsa.model.TypeMetaFile;
 import br.com.catalagovpsa.repository.interfaces.CategoryRepository;
+import br.com.catalagovpsa.repository.interfaces.MetaFileRepository;
 import br.com.catalagovpsa.repository.interfaces.ProductRepository;
 import br.com.catalagovpsa.repository.interfaces.SyncronizeRepository;
 import br.com.catalagovpsa.service.interfaces.SynchronizeService;
@@ -34,6 +37,9 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private MetaFileRepository metaFileRepository;
 
 	@Autowired
 	private RestOperations synchronizeTemplate;
@@ -41,6 +47,8 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	private String productsList;
 	
 	private String categorysList;
+	
+	private String productPhotos;
 
 	public void update() {
 		List<Customer> customers = syncronizeRepository.allCustomers();
@@ -51,10 +59,67 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 					continue;
 				}
 				loadCategorys(customer,0);
+				
+				loadPhotos(customer);
 			}
 		}
 	}
 	
+	private void loadPhotos(Customer customer) {
+		
+		List<Product> list = productRepository.all(customer.getCnpj());
+		
+		for(Product product: list){
+			
+			MetaFile max = metaFileRepository.getMax(customer.getCnpj(), product.getId(), TypeMetaFile.PRODUCT);				
+			
+			String alteradoApos = "01/01/1990 00:00:00";
+			
+			if(max != null)
+			{			
+				alteradoApos = max.getAlteradoApos();
+			}					
+		
+			ArrayNode resultPhotos = synchronizeTemplate.getForObject(MessageFormat.format("{0}/{1}/{2}", productPhotos,customer.getCnpj(),alteradoApos), ArrayNode.class);
+			
+			if (resultPhotos == null || resultPhotos.size() == 0) {
+				continue;
+			}
+			
+			for (JsonNode node : resultPhotos) {
+				
+				MetaFile metaFile = metaFileRepository.get(customer.getCnpj(), node.get("id").getLongValue());
+
+				if (metaFile == null) {
+					metaFile = new MetaFile( node.get("cnpj").getTextValue(), product.getId());
+				}
+				else
+				{
+					boolean deletado =  node.get("name") != null ? node.get("name").getBooleanValue() : null;
+					
+					if(deletado)
+					{
+						metaFileRepository.delete(customer.getCnpj(), product.getId());
+						continue;
+					}
+				}
+				
+				metaFile.setDate(node.get("modified") != null ? ParametrosRest.stringToCalendar( node.get("modified").getTextValue()).getTimeInMillis() : null);
+				
+				metaFile.setFileName( node.get("name") != null ? node.get("name").getTextValue() : null );
+				metaFile.setFileSize( node.get("size") != null ? node.get("size").getTextValue() : null );								
+				metaFile.setFileURL( node.get("url") != null ? node.get("url").getTextValue() : null );								
+				metaFile.setId( node.get("id") != null ? node.get("id").getLongValue() : null );
+				
+				metaFileRepository.add(metaFile);
+								
+			}
+			
+			
+		}
+		
+	}
+
 	public void update(Customer customer) {
 		processCustomer(customer);
 	}
@@ -125,6 +190,8 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 			product.setCategoryId(idCategory);						
 
 			productRepository.add(product);
+			
+			
 		}
 
 		loadProducts(customer,idCategory, begin + MAX_PRODUCTS_LIST_FROM_SERVICE);
@@ -149,6 +216,14 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 
 	public void setCategorysList(String categorysList) {
 		this.categorysList = categorysList;
+	}
+
+	public String getProductPhotos() {
+		return productPhotos;
+	}
+
+	public void setProductPhotos(String productPhotos) {
+		this.productPhotos = productPhotos;
 	}
 	
 

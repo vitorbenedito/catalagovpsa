@@ -1,6 +1,6 @@
 package br.com.catalagovpsa.model;
 
-public enum TypeFileMeta {
+public enum TypeMetaFile {
 	
 	PRODUCT, PROFILE;
 	
