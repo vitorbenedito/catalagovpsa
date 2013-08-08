@@ -27,6 +27,8 @@ public class Product {
 	private BigDecimal sellingPrice;
 	
 	private Long date;
+	
+	private ProductDetail detail;
 
 	public Long getId() {
 		return id;
@@ -140,6 +142,18 @@ public class Product {
 
 	public void setSellingPrice(BigDecimal sellingPrice) {
 		this.sellingPrice = sellingPrice;
+	}
+
+	public ProductDetail getDetail() {
+		if(detail == null)
+		{
+			detail = new ProductDetail();
+		}
+		return detail;
+	}
+
+	public void setDetail(ProductDetail detail) {
+		this.detail = detail;
 	}	
 	
 }

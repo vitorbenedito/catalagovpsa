@@ -177,5 +177,7 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
 </beans>

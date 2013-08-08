@@ -1,6 +1,7 @@
 package br.com.catalagovpsa.model;
 
 import java.math.BigDecimal;
+import java.util.LinkedList;
 
 
 public class ProductDetail {	
@@ -12,6 +13,8 @@ public class ProductDetail {
 	private String specification;
 	
 	private BigDecimal sellingPrice;
+	
+	private LinkedList<FileMeta> photos;
 
 	public Long getProductId() {
 		return productId;
@@ -44,7 +47,17 @@ public class ProductDetail {
 	public void setSellingPrice(BigDecimal sellingPrice) {
 		this.sellingPrice = sellingPrice;
 	}
-	
-	
+
+	public LinkedList<FileMeta> getPhotos() {
+		if(photos == null)
+		{
+			photos = new LinkedList<FileMeta>();
+		}
+		return photos;
+	}
+
+	public void setPhotos(LinkedList<FileMeta> photos) {
+		this.photos = photos;
+	}
 	
 }
