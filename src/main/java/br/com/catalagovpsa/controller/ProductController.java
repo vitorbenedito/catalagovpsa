@@ -190,10 +190,10 @@ public class ProductController {
 		 }
 	 }
 	
-	@RequestMapping(value = "/get/{value}/{productId}", method = RequestMethod.GET)
-	 public void get(HttpServletResponse response,@PathVariable Integer value,@PathVariable Long productId) throws Exception{
+	@RequestMapping(value = "/get/{value}/{id}", method = RequestMethod.GET)
+	 public void get(HttpServletResponse response,@PathVariable Integer value,@PathVariable Long id) throws Exception{
 						
-		 MetaFile getFile = product.getDetail().getPhotos().get(value);
+		 MetaFile getFile = metaFileRepository.get(customerService.getCustomer().getCnpj(), id);
 		 try {		
 			 	
 			 response.setContentType("image/jpeg");
