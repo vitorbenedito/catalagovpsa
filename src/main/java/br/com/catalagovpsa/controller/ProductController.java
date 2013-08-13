@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,6 +37,7 @@ import br.com.catalagovpsa.repository.interfaces.CategoryRepository;
 import br.com.catalagovpsa.repository.interfaces.MetaFileRepository;
 import br.com.catalagovpsa.repository.interfaces.ProductRepository;
 import br.com.catalagovpsa.service.interfaces.CustomerService;
+import br.com.catalagovpsa.service.interfaces.UploadService;
 
 @Controller("productController")
 @RequestMapping("/adm/product")
@@ -52,6 +54,9 @@ public class ProductController {
 	
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private UploadService uploadService;
 	
 	@RequestMapping(value = "/")
 	public String index(Model model, HttpServletRequest request) throws Exception {
@@ -114,64 +119,43 @@ public class ProductController {
 		return "/product/list";
 	}
 	
-	@RequestMapping(value="/upload/{productId}", method = RequestMethod.POST)
-	public @ResponseBody LinkedList<MetaFile> upload(MultipartHttpServletRequest request, HttpServletResponse response,@PathVariable Long productId) throws Exception {
-				
-		return uploadFiles(request, productId);
- 
+	@RequestMapping(value="/upload/{productId}/{photoId}", method = RequestMethod.POST)
+	public @ResponseBody LinkedList<MetaFile> upload(MultipartHttpServletRequest request, HttpServletResponse response,@PathVariable Long productId,@PathVariable Long photoId) throws Exception {				
+		return uploadFiles(request, productId, photoId);
 	}
 
-	private LinkedList<MetaFile> uploadFiles(MultipartHttpServletRequest request, Long productId)throws Exception 
+	private LinkedList<MetaFile> uploadFiles(MultipartHttpServletRequest request, Long productId, Long photoId)throws Exception 
 	{
-		Customer customer = customerService.getCustomer();
-		Product product = productRepository.get(customer.getCnpj(), productId);
+		Customer customer = customerService.getCustomer();		
 		
 		LinkedList<MetaFile> files = new LinkedList<MetaFile>();
 		
-		//1. build an iterator
-		 Iterator<String> itr =  request.getFileNames();
-		 MultipartFile mpf = null;
-
-		 //2. get each file
-		 while(itr.hasNext()){
-			 
-			 //2.1 get next MultipartFile
+		Iterator<String> itr =  request.getFileNames();
+	 	MultipartFile mpf = null;
+	
+		while(itr.hasNext()){
+			 		
 			 mpf = request.getFile(itr.next()); 
 			 System.out.println(mpf.getOriginalFilename() +" uploaded! "+files.size());
-
-			 //2.2 if files > 10 remove the first from the list
-			 if(files.size() >= 10)
+		
+			 if(files.size() >= 5){
 				 files.pop();
+			 }
 			 
-			 //2.3 create new MetaFile
-			 MetaFile MetaFile = new MetaFile();
-			 MetaFile.setFileName(mpf.getOriginalFilename());
-			 MetaFile.setFileSize(mpf.getSize()/1024+" Kb");
-			 MetaFile.setFileType(mpf.getContentType());
+			 MetaFile metaFile = new MetaFile();
 			 
-			 try {
-				MetaFile.setFile(mpf.getBytes());
-				
-				InputStream input = new ByteArrayInputStream(MetaFile.getFile());
-				
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				
-				Thumbnails.of(input)
-		        .size(160, 160)
-		        .toOutputStream(out);
-				
-				MetaFile.setThumbnail( out.toByteArray() );
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			 //2.4 add to files
-			 files.add(MetaFile);
+			 metaFile.setFileName(mpf.getOriginalFilename());
+			 metaFile.setFileSize(mpf.getSize()/1024+" Kb");
+			 metaFile.setFileType(mpf.getContentType());
 			 
-		 }
-		 
-		 productRepository.add(product);
+			 metaFile.setCnpj( customer.getCnpj() );
+			 metaFile.setDate( Calendar.getInstance().getTimeInMillis() );
+			 
+			 metaFile.setReferenceId( productId );			 			 			 			 			 
+			 
+			 files.add(metaFile);
+			 
+		}		 		
 		 
 		return files;
 	}

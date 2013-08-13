@@ -66,13 +66,23 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 		<property name="locations">
 			<list>
 				<value>classpath:/rest-urls.properties</value>
-				<value>classpath:/mongo.properties</value>				
+				<value>classpath:/mongo.properties</value>		
+				<value>classpath:/aws.properties</value>		
 			</list>
 		</property>
 		<property name="properties">
 			<ref bean="urlsMap" />
 		</property>
-	</bean>			
+	</bean>		
+	
+	<bean id="basicAwsAuth" class="com.amazonaws.auth.BasicAWSCredentials">
+		<constructor-arg value="${aws.accessKey}" />
+		<constructor-arg value="${aws.secretKey}" />
+	</bean>
+	
+	<bean id="amazonS3" class="com.amazonaws.services.s3.AmazonS3Client">
+		<constructor-arg ref="basicAwsAuth" />
+	</bean>	
 
 	<!-- http://stackoverflow.com/questions/6479712/why-is-jackson-wrapping-my-objects-with-an-extra-layer-named-after-the-class -->
 	<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" p:extractValueFromSingleKeyModel="true" />

@@ -22,11 +22,9 @@ public class MetaFile {
 	private String fileURL;
 	private String fileType;
 	
-	private Long date;
+	private String thumbnailURL;
 	
-	private byte[] file;
-	
-	private byte[] thumbnail;
+	private Long date;		
 	
 	public MetaFile() {
 		
@@ -67,25 +65,14 @@ public class MetaFile {
 	}
 	public void setType(String type) {
 		this.type = type;
-	}	
-	public byte[] getThumbnail() {
-		return thumbnail;
-	}
-	public void setThumbnail(byte[] thumbnail) {
-		this.thumbnail = thumbnail;
-	}
+	}		
 	public String getFileURL() {
 		return fileURL;
 	}
 	public void setFileURL(String fileURL) {
 		this.fileURL = fileURL;
 	}
-	public byte[] getFile() {
-		return file;
-	}
-	public void setFile(byte[] file) {
-		this.file = file;
-	}
+	
 	public Long getReferenceId() {
 		return referenceId;
 	}
@@ -129,6 +116,15 @@ public class MetaFile {
 			return calendar;
 		}
 		return null;
+	}
+
+	public String getThumbnailURL() {
+		return thumbnailURL;
+	}
+
+	public void setThumbnailURL(String thumbnailURL) {
+		this.thumbnailURL = thumbnailURL;
 	}	
+	
 	
 }
