@@ -97,7 +97,12 @@ public class ProductController {
 	public String details(@PathVariable Long id, Model model, HttpServletRequest request) throws Exception {
 		Customer customer = customerService.getCustomer();
 		Product product = productRepository.get(customer.getCnpj(), id);
-		model.addAttribute("product", product);		
+		
+		List<MetaFile> photos = metaFileRepository.findByProduct(customer.getCnpj(), id);
+		
+		model.addAttribute("product", product);	
+		model.addAttribute("photos", MetaFile.completeWithEmptyFiles(photos));	
+		model.addAttribute("firstURL", photos != null && photos.size() > 0 ? photos.get(0).getFileURL() : "");	
 		model.addAttribute("categorys", getCategorys(customer));
 		return "/product/detail";
 	}

@@ -28,9 +28,9 @@ public class MetaFileRepositoryImpl implements MetaFileRepository {
 		template.save(metaFile, COLLECTION_NAME);
 	}
 
-	public MetaFile getMax(String cnpj, Long referenceId, TypeMetaFile type) {
+	public MetaFile getMax(String cnpj, TypeMetaFile type) {
 	
-		List<MetaFile> list = template.find(new Query(Criteria.where("cnpj").is(cnpj).and("referenceId").is(referenceId).and("type").is(type.name())).with( new PageRequest(0,1,Direction.DESC,"date") ), MetaFile.class, COLLECTION_NAME);
+		List<MetaFile> list = template.find(new Query(Criteria.where("cnpj").is(cnpj).and("type").is(type.name())).with( new PageRequest(0,1,Direction.DESC,"date") ), MetaFile.class, COLLECTION_NAME);
 		
 		if(list != null && list.size() > 0)
 		{
@@ -44,13 +44,12 @@ public class MetaFileRepositoryImpl implements MetaFileRepository {
 		return template.find(new Query(Criteria.where("cnpj").is(cnpj).and("referenceId").is(referenceId)), MetaFile.class, COLLECTION_NAME);
 	}
 	
-	public MetaFile get(String cnpj, Long id) {
+	public MetaFile get(String cnpj, String id) {
 		return template.findOne(new Query(Criteria.where("cnpj").is(cnpj).and("id").is(id)), MetaFile.class, COLLECTION_NAME);
 	}
 		
-	public void delete(String cnpj, Long referenceId) {
-		Product file = template.findOne(new Query(Criteria.where("referenceId").is(referenceId)), Product.class, COLLECTION_NAME);
-		template.remove(file, COLLECTION_NAME);
+	public void delete(MetaFile metaFile) {
+		template.remove(metaFile, COLLECTION_NAME);
 	}	
 	
 }

@@ -9,7 +9,7 @@ import br.com.catalagovpsa.utils.ParametrosRest;
 @JsonIgnoreProperties({"file","thumbnail"})
 public class MetaFile {
 		
-	private Long id;
+	private String id;
 	
 	private Long referenceId;
 	private String cnpj;
@@ -92,11 +92,11 @@ public class MetaFile {
 		this.cnpj = cnpj;
 	}		
 	
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -116,6 +116,25 @@ public class MetaFile {
 			return calendar;
 		}
 		return null;
+	}
+	
+	public static List<MetaFile> completeWithEmptyFiles(List<MetaFile> list){
+		
+		if(list == null)
+		{
+			list = new ArrayList<MetaFile>();
+		}
+		
+		MetaFile metaFile = new MetaFile();
+		metaFile.setFileURL( null );
+		
+		for(int i = list.size(); i < 5; i++)
+		{
+			list.add( metaFile );
+		}
+		
+		return list;
+		
 	}
 
 	public String getThumbnailURL() {

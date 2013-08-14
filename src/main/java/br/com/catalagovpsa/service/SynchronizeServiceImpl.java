@@ -58,64 +58,75 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 				if (!StringUtils.hasText(customer.getToken())) {
 					continue;
 				}
-				loadCategorys(customer,0);
+//				try{
+//					loadCategorys(customer,0);
+//				}
+//				catch(Exception ex){
+//					System.out.println(ex.getMessage());
+//				}
 				
-				loadPhotos(customer);
+				try{
+					loadPhotos(customer);
+				}
+				catch(Exception ex){
+					System.out.println(ex.getMessage());
+				}
+						
+			
 			}
 		}
 	}
 	
 	private void loadPhotos(Customer customer) {
-		
-		List<Product> list = productRepository.all(customer.getCnpj());
-		
-		for(Product product: list){
-			
-			MetaFile max = metaFileRepository.getMax(customer.getCnpj(), product.getId(), TypeMetaFile.PRODUCT);				
-			
-			String alteradoApos = "01/01/1990 00:00:00";
-			
-			if(max != null)
-			{			
-				alteradoApos = max.getAlteradoApos();
-			}					
-		
-			ArrayNode resultPhotos = synchronizeTemplate.getForObject(MessageFormat.format("{0}/{1}/{2}", productPhotos,customer.getCnpj(),alteradoApos), ArrayNode.class);
-			
-			if (resultPhotos == null || resultPhotos.size() == 0) {
-				continue;
-			}
-			
-			for (JsonNode node : resultPhotos) {
 				
-				MetaFile metaFile = metaFileRepository.get(customer.getCnpj(), node.get("id").getLongValue());
+		MetaFile max = metaFileRepository.getMax(customer.getCnpj(), TypeMetaFile.PRODUCT);				
 
-				if (metaFile == null) {
-					metaFile = new MetaFile( node.get("cnpj").getTextValue(), product.getId());
-				}
-				else
-				{
-					boolean deletado =  node.get("name") != null ? node.get("name").getBooleanValue() : null;
-					
-					if(deletado)
-					{
-						metaFileRepository.delete(customer.getCnpj(), product.getId());
-						continue;
-					}
-				}
-				
-				metaFile.setDate(node.get("modified") != null ? ParametrosRest.stringToCalendar( node.get("modified").getTextValue()).getTimeInMillis() : null);
-				
-				metaFile.setFileName( node.get("name") != null ? node.get("name").getTextValue() : null );
-				metaFile.setFileSize( node.get("size") != null ? node.get("size").getTextValue() : null );								
-				metaFile.setFileURL( node.get("url") != null ? node.get("url").getTextValue() : null );								
-				metaFile.setId( node.get("id") != null ? node.get("id").getLongValue() : null );
-				
-				metaFileRepository.add(metaFile);
-								
+		String alteradoApos = "01/01/1990 00:00:00";
+
+		if(max != null)
+		{			
+			alteradoApos = max.getAlteradoApos();
+		}					
+
+		String url = productPhotos +"/"+customer.getCnpj()+"/"+ParametrosRest.stringToCalendar( alteradoApos ).getTime().getTime();
+
+		ArrayNode resultPhotos = synchronizeTemplate.getForObject(url, ArrayNode.class);
+
+		if (resultPhotos == null || resultPhotos.size() == 0) {
+			return;
+		}
+
+		for (JsonNode node : resultPhotos) {
+
+			MetaFile metaFile = metaFileRepository.get(customer.getCnpj(), node.get("id").getTextValue());
+			
+			Product product = productRepository.get(customer.getCnpj(), node.get("productId").getLongValue());
+			
+			if (metaFile == null) {
+				metaFile = new MetaFile( node.get("cnpj").getTextValue(), product.getId());
 			}
-			
-			
+			else
+			{
+				boolean deleted =  node.get("deleted") != null ? node.get("deleted").getBooleanValue() : null;
+
+				if(deleted)
+				{
+					metaFileRepository.delete(metaFile);
+					continue;
+				}
+			}
+
+			metaFile.setDate(node.get("modified") != null ? node.get("modified").getLongValue() : null);
+
+			metaFile.setFileName( node.get("name") != null ? node.get("name").getTextValue() : null );
+			metaFile.setFileSize( node.get("size") != null ? node.get("size").getTextValue() : null );								
+			metaFile.setFileURL( node.get("url") != null ? node.get("url").getTextValue() : null );								
+			metaFile.setId( node.get("id") != null ? node.get("id").getTextValue() : null );
+
+			metaFile.setType(TypeMetaFile.PRODUCT.name());
+
+			metaFileRepository.add(metaFile);
+
 		}
 		
 	}

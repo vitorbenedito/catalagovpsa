@@ -5,68 +5,122 @@
 
 <custom:main title="Detalhe" selectedItem="${product.description}">
 
+<link href="<c:url value="/assets/css/adipoli.css"/>" rel="stylesheet"/>
 
 	<form>
+	 
+		<fieldset>	
+			<legend>Alteração Produto</legend>																					
+		</fieldset>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="span6">				
+					<fieldset>	
+						<h4>
+							Descrição
+						</h4>		
+						<label class="radio inline">															
+							<input type="radio" name="radioDesc" id="radioDesc1" value="radioDesc1" checked> VPSA
+						</label>		
+						<label class="radio inline">			
+							<input type="radio" name="radioDesc" id="radioDesc2" value="radioDesc2"> Customizado	
+						</label>
+					</fieldset>																		
+					<fieldset>								
+						<textarea id="description_vpsa" rows="2" readonly="readonly" >
+							${product.description}
+						</textarea>
+					</fieldset>
+					
+					<fieldset>	
+						<h4>
+							Preço
+						</h4>		
+						<label class="radio inline">															
+							<input type="radio" name="radioPreco" id="radioPreco1" value="radioPreco1" checked> VPSA
+						</label>		
+						<label class="radio inline">			
+							<input type="radio" name="radioPreco" id="radioPreco2" value="radioPreco2"> Customizado	
+						</label>
+					</fieldset>																		
+					<fieldset>								
+						<input type="text" id="preco" name="preco" value="${product.sellingPrice}"/>				
+					</fieldset>
+					
+					<fieldset>	
+						<h4>
+							Especificação
+						</h4>		
+						<label class="radio inline">															
+							<input type="radio" name="radioSpec" id="radioSpec1" value="radioSpec1" checked> VPSA
+						</label>		
+						<label class="radio inline">			
+							<input type="radio" name="radioSpec" id="radioSpec2" value="radioSpec2"> Customizado	
+						</label>
+					</fieldset>																		
+					<fieldset>								
+						<textarea id="description_vpsa" rows="6" readonly="readonly" >
+							${product.specification}
+						</textarea>
+					</fieldset>
+				</div>
 		
-			<legend>Alteração produto</legend>																					
+				<div id="divPhotos" class="span6">
+		
+					<div class="row-fluid">
+					
+						<span class="file-wrapper">
+		  					<input  id="fileupload" type="file" name="files[]" data-url="<c:url value="/adm/product/upload/${product.id}"/>" multiple>
+		  					<span class="button">Escolha as fotos</span>
+						</span>
+					
+						<div class="principalphoto">
+							<img class="imgprincipalphoto" src="${firstURL}" id="principalimg">
+						</div>
 						
-			<div class="form-group">		
-				<div class="radio">																										
-					<label >						
-						Descrição VPSA										
-						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-					</label>					
-				</div>										
-				<textarea id="description_vpsa" rows="4" readonly="readonly" >
-					${product.description}
-				</textarea>
+						<ul class="thumbnails" id="productDiv">
+							<c:forEach items="${photos}" var="entry" > 
+								<li class="span1" id="dropzone">
+									<a href="#" onmouseover="showImg(this)">
+										<c:if test="${not empty entry.fileURL}"> 
+											<img src="${entry.fileURL}" class="img-style row1" id="img_mini" alt="foto">
+										</c:if>
+										
+										<c:if test="${empty entry.fileURL}"> 
+											<img src="<c:url value="/assets/img/square.gif"/>" class="img-style row1" id="img_mini" alt="foto">
+										</c:if>
+									</a>
+								
+								</li>
+									
+										
+							</c:forEach>
+						</ul>	
+					</div>
+		
+					<div id="progress" class="progress hide">
+				    	<div class="bar" style="width: 0%;"></div>
+					</div>
+			
+			
+				</div>
 			</div>
-			<div class="form-group">			
-				<div class="radio">																										
-					<label >						
-						Descrição										
-						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-					</label>					
-				</div>					 
-				<textarea class="form-control" id="description" rows="4" >
-					${product.description}
-				</textarea>
-			</div>
-						
-			<button type="submit" class="btn btn-default">Salvar</button>
+		</div>
+		<hr/>
+		
+		<div class="btn-bottom">
+			<button type="submit" class="btn">Cancelar</button>
+			<button type="submit" class="btn btn-success">Salvar</button>
+		</div>
 		
 	</form>
 	
-	<img src="<c:url value="/adm/product/get/1/${product.id}"/>">
-	
-	<div style="width:500px;padding:20px">
-
-	<input id="fileupload" type="file" name="files[]" data-url="<c:url value="/adm/product/upload/${product.id}"/>" multiple>
 	
 	<div >
-		<div id="dropzone" class="fade well">Foto 1</div>
-		
-		<div id="dropzone" class="fade well">Foto 2</div>
-		
-		<div id="dropzone" class="fade well">Foto 3</div>
-		
-		<div id="dropzone" class="fade well">Foto 4</div>
-		
-		<div id="dropzone" class="fade well">Foto 4</div>
-	</div>
 	
-	<div id="progress" class="progress">
-    	<div class="bar" style="width: 0%;"></div>
-	</div>
+	
 
-	<table id="uploaded-files" class="table">
-		<tr>
-			<th>Arquivo</th>
-			<th>Tamanho</th>
-			<th>Tipo</th>
-			<th>Download</th>
-		</tr>
-	</table>
+	
 	
 </div>
  
@@ -75,4 +129,23 @@
 <script src="<c:url value="/assets/js/jquery.iframe-transport.js"/>"></script>
 <script src="<c:url value="/assets/js/jquery.fileupload.js"/>"></script>
 <script src="<c:url value="/assets/js/myuploadfunction.js"/>" ></script>
+<script src="<c:url value="/assets/js/jquery.adipoli.min.js"/>" ></script>
+
+<script>
+$(function(){
+    $('.row1').adipoli({
+        'startEffect' : 'normal',
+        'hoverEffect' : 'popout'
+    });
+    
+   
+    
+});
+
+function showImg(img){
+	document.getElementById('principalimg').src = img.querySelector("#img_mini").src;
+}
+
+</script>
+
 

@@ -12,12 +12,12 @@ public interface MetaFileRepository {
 	
 	public void add(MetaFile metaFile);
 	
-	public MetaFile getMax(String cnpj, Long referenceId, TypeMetaFile type);
+	public MetaFile getMax(String cnpj, TypeMetaFile type);
 	
 	public List<MetaFile> findByProduct(String cnpj, Long referenceId);
 	
-	public MetaFile get(String cnpj, Long id);
+	public MetaFile get(String cnpj, String id);
 	
-	public void delete(String cnpj, Long referenceId);
+	public void delete(MetaFile metaFile);
 	
 }
