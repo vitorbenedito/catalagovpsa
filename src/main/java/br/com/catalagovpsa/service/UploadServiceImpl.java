@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -15,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.catalagovpsa.model.MetaFile;
 import br.com.catalagovpsa.repository.interfaces.MetaFileRepository;
-import br.com.vpsa.uploader.domain.UploadedFile;
-import br.com.vpsa.uploader.repository.interfaces.UploadRepository;
-import br.com.vpsa.uploader.service.interfaces.ImageResizeService;
-import br.com.vpsa.uploader.service.interfaces.UploadService;
+import br.com.catalagovpsa.service.interfaces.UploadService;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

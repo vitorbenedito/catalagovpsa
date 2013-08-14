@@ -1,9 +1,6 @@
 package br.com.catalagovpsa.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -15,12 +12,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.coobird.thumbnailator.Thumbnails;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -124,12 +118,12 @@ public class ProductController {
 		return "/product/list";
 	}
 	
-	@RequestMapping(value="/upload/{productId}/{photoId}", method = RequestMethod.POST)
-	public @ResponseBody LinkedList<MetaFile> upload(MultipartHttpServletRequest request, HttpServletResponse response,@PathVariable Long productId,@PathVariable Long photoId) throws Exception {				
-		return uploadFiles(request, productId, photoId);
+	@RequestMapping(value="/upload/{productId}", method = RequestMethod.POST)
+	public @ResponseBody LinkedList<MetaFile> upload(MultipartHttpServletRequest request, HttpServletResponse response,@PathVariable Long productId) throws Exception {				
+		return uploadFiles(request, productId);
 	}
 
-	private LinkedList<MetaFile> uploadFiles(MultipartHttpServletRequest request, Long productId, Long photoId)throws Exception 
+	private LinkedList<MetaFile> uploadFiles(MultipartHttpServletRequest request, Long productId)throws Exception 
 	{
 		Customer customer = customerService.getCustomer();		
 		
@@ -163,33 +157,12 @@ public class ProductController {
 		}		 		
 		 
 		return files;
-	}
-
-	@RequestMapping(value = "/download/{id}", method = RequestMethod.GET)
-	 public void download(HttpServletResponse response,@PathVariable String value,@PathVariable Long id) throws Exception{
-		
-		MetaFile getFile = metaFileRepository.get(customerService.getCustomer().getCnpj(), id);
-		
-		 try {		
-			 	response.setContentType(getFile.getFileType());
-			 	response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getFileName()+"\"");
-		        FileCopyUtils.copy(getFile.getFile(), response.getOutputStream());
-		 }catch (IOException e) {				
-				e.printStackTrace();
-		 }
-	 }
+	}	
 	
 	@RequestMapping(value = "/get/{value}/{id}", method = RequestMethod.GET)
-	 public void get(HttpServletResponse response,@PathVariable Integer value,@PathVariable Long id) throws Exception{
+	 public void get(HttpServletResponse response,@PathVariable Integer value,@PathVariable String id) throws Exception{
 						
 		 MetaFile getFile = metaFileRepository.get(customerService.getCustomer().getCnpj(), id);
-		 try {		
-			 	
-			 response.setContentType("image/jpeg");
-			 response.getOutputStream().write(getFile.getThumbnail());
-		 }catch (IOException e) {				
-				e.printStackTrace();
-		 }
 	 }
 
 	private Map<Category, List<Category>> getCategorys(Customer customer) {
