@@ -3,17 +3,25 @@ $(function () {
         dataType: 'json',
         
         done: function (e, data) {
-        	$("tr:has(td)").remove();
+        	$("ul:has(li)").remove();
             $.each(data.result, function (index, file) {
             	
+            	var img = '';
             	
-                $("#uploaded-files").append(
-                		$('<tr/>')
-                		.append($('<td/>').text(file.fileName))
-                		.append($('<td/>').text(file.fileSize))
-                		.append($('<td/>').text(file.fileType))
-                		.append($('<td/>').html("<a href='/catalagovpsa/adm/product/get/"+index+"'>Click</a>"))
-                		)//end $("#uploaded-files").append()
+            	if(file.fileURL != null)
+            	{
+            		img = '<img src="'+file.fileURL+'" class="img-style row1" id="img_mini" alt="foto">';
+            	}
+            	else
+            	{
+            		"<img src='<c:url value='' class='img-style row1' id='img_mini' alt='foto'>";
+            	}
+            	
+                $("#productDiv").append(
+                		$('<li class="span1" id="dropzone"/>')
+                		.append($('<a href="#" onmouseover="showImg(this)"/>').text(img))
+                		
+                		)
             }); 
         },
         
