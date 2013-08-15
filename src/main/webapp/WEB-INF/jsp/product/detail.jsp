@@ -68,12 +68,12 @@
 				<div id="divPhotos" class="span6">
 		
 					<div class="row-fluid">
-					
+						
 						<span class="file-wrapper">
 		  					<input  id="fileupload" type="file" name="files[]" data-url="<c:url value="/adm/product/upload/${product.id}"/>" multiple>
 		  					<span class="button">Escolha as fotos</span>
 						</span>
-					
+						<hr>
 						<div class="principalphoto">
 							<img class="imgprincipalphoto" src="${firstURL}" id="principalimg">
 						</div>

@@ -1,6 +1,5 @@
 package br.com.catalagovpsa.service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -43,9 +42,11 @@ public class UploadServiceImpl implements UploadService {
 		ObjectListing objectListing = s3.listObjects(new ListObjectsRequest().withBucketName(BUCKET_NAME).withPrefix(file.getName()));
 		if (objectListing.getObjectSummaries().size() > 0) {
 			throw new IOException("File exists on storage");
-		}				
+		}	
 		
-		ByteArrayOutputStream out = new ByteArrayOutputStream();				
+		Thumbnails.of(file)
+        .height(350)
+        .toFile(file);	
 
 		s3.putObject(new PutObjectRequest(BUCKET_NAME, file.getName(), file).withCannedAcl(CannedAccessControlList.PublicRead));
 		String url = MessageFormat.format("https://{0}.s3.amazonaws.com/{1}", BUCKET_NAME, file.getName());

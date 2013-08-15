@@ -1,6 +1,9 @@
 package br.com.catalagovpsa.controller;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -11,6 +14,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +37,7 @@ import br.com.catalagovpsa.repository.interfaces.MetaFileRepository;
 import br.com.catalagovpsa.repository.interfaces.ProductRepository;
 import br.com.catalagovpsa.service.interfaces.CustomerService;
 import br.com.catalagovpsa.service.interfaces.UploadService;
+
 
 @Controller("productController")
 @RequestMapping("/adm/product")
@@ -127,7 +133,7 @@ public class ProductController {
 	{
 		Customer customer = customerService.getCustomer();		
 		
-		LinkedList<MetaFile> files = new LinkedList<MetaFile>();
+		LinkedList<MetaFile> files = new LinkedList<MetaFile>( metaFileRepository.findByProduct(customer.getCnpj(), productId) );
 		
 		Iterator<String> itr =  request.getFileNames();
 	 	MultipartFile mpf = null;
@@ -150,7 +156,12 @@ public class ProductController {
 			 metaFile.setCnpj( customer.getCnpj() );
 			 metaFile.setDate( Calendar.getInstance().getTimeInMillis() );
 			 
-			 metaFile.setReferenceId( productId );			 			 			 			 			 
+			 metaFile.setReferenceId( productId );	
+			 
+			 File tmpFile = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") +  mpf.getOriginalFilename());
+			 mpf.transferTo(tmpFile);
+					 
+			 uploadService.upToAmazon(metaFile,tmpFile);
 			 
 			 files.add(metaFile);
 			 
