@@ -1,7 +1,7 @@
 package br.com.catalagovpsa.model;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -120,11 +120,11 @@ public class MetaFile {
 		return null;
 	}
 	
-	public static List<MetaFile> completeWithEmptyFiles(List<MetaFile> list){
+	public static LinkedList<MetaFile> completeWithEmptyFiles(List<MetaFile> list){
 		
 		if(list == null)
 		{
-			list = new ArrayList<MetaFile>();
+			list = new LinkedList<MetaFile>();
 		}
 		
 		MetaFile metaFile = new MetaFile();
@@ -135,7 +135,7 @@ public class MetaFile {
 			list.add( metaFile );
 		}
 		
-		return list;
+		return new LinkedList<MetaFile>(list);
 		
 	}
 

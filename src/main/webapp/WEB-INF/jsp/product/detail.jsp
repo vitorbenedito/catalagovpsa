@@ -79,15 +79,68 @@
 	</form>
 	
 	
-	<div >
 	
-	
-
-	
-	
-</div>
  
 </custom:main>
+
+<div class="modal container fade" id="myModal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Fotos - ${product.description}</h4>
+			</div>
+			<div class="modal-body custom-height-modal">
+
+				<div id="myCarousel" class="carousel slide">
+					
+						<div class="carousel-inner">
+							<c:forEach items="${photos}" var="entry">
+								<c:if test="${entry.fileURL eq firstURL}">
+									<div class="item active">
+										<div class="principalphoto">
+											<img src="${entry.fileURL}" id="principalimgmodal">
+										</div>
+									</div>
+								</c:if>
+								<c:if test="${entry.fileURL ne firstURL}">
+									<div class="item">
+										<img src="${entry.fileURL}" id="principalimgmodal">
+									</div>
+								</c:if>
+							</c:forEach>
+						</div>
+					
+					<a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a> 
+					<a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+
+				<c:forEach items="${photos}" var="entry" varStatus="count">
+					<li class="span1" id="dropzone">
+					<a href="#" onmouseover="showImgModal(${count.index})" >
+							<c:if test="${not empty entry.thumbnailURL}">
+								<img src="${entry.thumbnailURL}" class="img-style row1"
+									id="img_mini" alt="foto">
+							</c:if> <c:if test="${empty entry.fileURL}">
+								<img src="<c:url value="/assets/img/square.gif"/>"
+									class="img-style row1" id="img_mini" alt="foto">
+							</c:if>
+					</a></li>
+				</c:forEach>
+
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <script src="<c:url value="/assets/js/vendor/jquery.ui.widget.js"/>"></script>
 <script src="<c:url value="/assets/js/jquery.iframe-transport.js"/>"></script>
 <script src="<c:url value="/assets/js/jquery.fileupload.js"/>"></script>
@@ -99,16 +152,27 @@ $(function(){
     $('.row1').adipoli({
         'startEffect' : 'normal',
         'hoverEffect' : 'popout'
-    });
-    
-   
+    });   
     
 });
 
 function showImg(img){
-	document.getElementById('principalimg').src = img.querySelector("#img_mini").src;
+	document.getElementById('principalimg').src = img;
 }
 
-</script>
+function showImgModal(index){
+	$('.modal').carousel(index);
+}
+
+$('.modal').css({ 
+  width: 'auto',
+  'margin-left': function () {
+     return -($(this).width() / 2);
+  }
+});
+
+
+
+</script> 
 
 

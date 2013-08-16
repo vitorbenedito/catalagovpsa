@@ -39,17 +39,16 @@ public class UploadServiceImpl implements UploadService {
 			s3.createBucket(BUCKET_NAME, Region.SA_SaoPaulo);
 		}
 
-		ObjectListing objectListing = s3.listObjects(new ListObjectsRequest().withBucketName(BUCKET_NAME).withPrefix(file.getName()));
+		String fileName = nameConcat(file.getName(),metaFile.getCnpj(),metaFile.getReferenceId(), false);				
+		
+		ObjectListing objectListing = s3.listObjects(new ListObjectsRequest().withBucketName(BUCKET_NAME).withPrefix(fileName));
 		if (objectListing.getObjectSummaries().size() > 0) {
 			throw new IOException("File exists on storage");
-		}	
-		
-		Thumbnails.of(file)
-        .height(350)
-        .toFile(file);	
+		}								
 
-		s3.putObject(new PutObjectRequest(BUCKET_NAME, file.getName(), file).withCannedAcl(CannedAccessControlList.PublicRead));
-		String url = MessageFormat.format("https://{0}.s3.amazonaws.com/{1}", BUCKET_NAME, file.getName());
+		s3.putObject(new PutObjectRequest(BUCKET_NAME, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));				
+		
+		String url = MessageFormat.format("https://{0}.s3.amazonaws.com/{1}", BUCKET_NAME, fileName);
 						
 		metaFile.setFileURL(url);
 		
@@ -57,8 +56,10 @@ public class UploadServiceImpl implements UploadService {
         .size(160, 160)
         .toFile(file);			
 		
-		s3.putObject(new PutObjectRequest(BUCKET_NAME, file.getName() + "_thumbnail", file).withCannedAcl(CannedAccessControlList.PublicRead));
-		String urlThumbnails = MessageFormat.format("https://{0}.s3.amazonaws.com/{1}", BUCKET_NAME, file.getName() + "_thumbnail");
+		String fileNameThumb = nameConcat(file.getName(),metaFile.getCnpj(),metaFile.getReferenceId(), true);
+		
+		s3.putObject(new PutObjectRequest(BUCKET_NAME, fileNameThumb , file).withCannedAcl(CannedAccessControlList.PublicRead));
+		String urlThumbnails = MessageFormat.format("https://{0}.s3.amazonaws.com/{1}", BUCKET_NAME, fileNameThumb);
 		
 		metaFile.setThumbnailURL( urlThumbnails );
 
@@ -68,5 +69,31 @@ public class UploadServiceImpl implements UploadService {
 		file.delete();
 
 	}	
+	
+	public String nameConcat(String name, String cnpj, Long productId, boolean isThumb)
+	{		
+		if(name != null)
+		{
+			if( name.lastIndexOf(".") > 0)
+			{
+				String fileName = name.substring(0, (name.lastIndexOf(".")) - 1 );
+				String type = name.substring( name.lastIndexOf("."), name.length() );				
+				
+				name = fileName + cnpj + productId;
+				if(isThumb)
+				{
+					name = name + "_thumb";
+				}
+				
+				return name + type;				
+			}
+			else
+			{			
+				return name + cnpj + productId;
+			}
+		}
+		
+		return "photo_" + name + "_" + productId.toString() + ".jpg";
+	}
 
 }

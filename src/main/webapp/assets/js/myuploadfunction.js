@@ -2,27 +2,36 @@ $(function () {
     $('#fileupload').fileupload({
         dataType: 'json',
         
-        done: function (e, data) {
-        	$("ul:has(li)").remove();
+        done: function (e, data) {        	        	        	        	        
+        	console.log("passou aqui 1"); 
+        	$("#thumbnailsUL").empty();
+        	
             $.each(data.result, function (index, file) {
-            	
-            	var img = '';
+            	            	
+            	var li = '';
             	
             	if(file.fileURL != null)
             	{
-            		img = '<img src="'+file.fileURL+'" class="img-style row1" id="img_mini" alt="foto">';
+            		li = '<li class="span1" id="dropzone"><a href="#" onmouseover="showImg("'+file.fileURL+'")"><img src="'+file.thumbnailURL+'" class="img-style row1" id="img_mini" alt="foto"></a></li>';
             	}
             	else
             	{
-            		"<img src='<c:url value='' class='img-style row1' id='img_mini' alt='foto'>";
+            		li = '<li class="span1" id="dropzone"><a href="#" onmouseover="showImg("'+file.fileURL+'")"><img src="/catalagovpsa/assets/img/square.gif" class="img-style row1" id="img_mini" alt="foto"></a></li>';
             	}
             	
-                $("#productDiv").append(
-                		$('<li class="span1" id="dropzone"/>')
-                		.append($('<a href="#" onmouseover="showImg(this)"/>').text(img))
-                		
-                		)
-            }); 
+            	$("#thumbnailsUL").append(li);              	            	
+            	            	          	               
+            });
+            
+            $('#progress .bar').css(
+       	         'width',0
+       	    );
+            
+            $('.row1').adipoli({
+                'startEffect' : 'normal',
+                'hoverEffect' : 'popout'
+            });
+                                            
         },
         
         progressall: function (e, data) {
@@ -31,6 +40,12 @@ $(function () {
 	            'width',
 	            progress + '%'
 	        );
+   		},
+   		
+   		fail: function (e, data) {	        
+   			$('#progress .bar').css(
+       	         'width',0
+       	    );
    		},
    		
 		dropZone: $('#dropzone')

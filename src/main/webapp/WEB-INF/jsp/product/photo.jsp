@@ -16,32 +16,25 @@
 			<img class="imgprincipalphoto" src="${firstURL}" id="principalimg">
 		</div>
 
-		<ul class="thumbnails" id="productDiv">
-			<c:forEach items="${photos}" var="entry">
-				<li class="span1" id="dropzone">
-					<a href="#"onmouseover="showImg(this)"> 
-						<c:if test="${not empty entry.fileURL}">
-							<img src="${entry.fileURL}" class="img-style row1" id="img_mini" alt="foto">
-						</c:if> 
-						<c:if test="${empty entry.fileURL}">
-							<img src="<c:url value="/assets/img/square.gif"/>" class="img-style row1" id="img_mini" alt="foto">
-						</c:if>
-					</a>
-				</li>
-			</c:forEach>
-		</ul>
+		
+			<ul class="thumbnails" id="thumbnailsUL">
+				<c:forEach items="${photos}" var="entry">
+					<li class="span1" id="dropzone">
+						<a href="#myModal"onmouseover="showImg('${entry.fileURL}')" data-toggle="modal" class="myModalTrigger"> 
+							<c:if test="${not empty entry.thumbnailURL}">
+								<img src="${entry.thumbnailURL}" class="img-style row1" id="img_mini" alt="foto">
+							</c:if> 
+							<c:if test="${empty entry.fileURL}">
+								<img src="<c:url value="/assets/img/square.gif"/>" class="img-style row1" id="img_mini" alt="foto">
+							</c:if>
+						</a>
+					</li>
+				</c:forEach> 
+			</ul>						
+		
 	</div>
 	
-	<table id="uploaded-files">
-        <tr>
-            <th>File Name</th>
-            <th>File Size</th>
-            <th>File Type</th>
-            <th>Download</th>
-        </tr>
-    </table>
-
-	<div id="progress" class="progress hide">
+	<div id="progress" class="progress">
 		<div class="bar" style="width: 0%;"></div>
 	</div>
 

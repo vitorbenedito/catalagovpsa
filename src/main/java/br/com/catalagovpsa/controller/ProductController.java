@@ -1,9 +1,6 @@
 package br.com.catalagovpsa.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -14,8 +11,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.coobird.thumbnailator.Thumbnails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -126,14 +121,14 @@ public class ProductController {
 	
 	@RequestMapping(value="/upload/{productId}", method = RequestMethod.POST)
 	public @ResponseBody LinkedList<MetaFile> upload(MultipartHttpServletRequest request, HttpServletResponse response,@PathVariable Long productId) throws Exception {				
-		return uploadFiles(request, productId);
+		return MetaFile.completeWithEmptyFiles( uploadFiles(request, productId) );
 	}
 
 	private LinkedList<MetaFile> uploadFiles(MultipartHttpServletRequest request, Long productId)throws Exception 
 	{
 		Customer customer = customerService.getCustomer();		
 		
-		LinkedList<MetaFile> files = new LinkedList<MetaFile>( metaFileRepository.findByProduct(customer.getCnpj(), productId) );
+		LinkedList<MetaFile> files = new LinkedList<MetaFile>( metaFileRepository.findByProduct(customer.getCnpj(), productId) );				
 		
 		Iterator<String> itr =  request.getFileNames();
 	 	MultipartFile mpf = null;
@@ -141,33 +136,35 @@ public class ProductController {
 		while(itr.hasNext()){
 			 		
 			 mpf = request.getFile(itr.next()); 
-			 System.out.println(mpf.getOriginalFilename() +" uploaded! "+files.size());
-		
-			 if(files.size() >= 5){
-				 files.pop();
-			 }
+			 System.out.println(mpf.getOriginalFilename() +" uploaded! "+files.size());					
 			 
-			 MetaFile metaFile = new MetaFile();
-			 
-			 metaFile.setFileName(mpf.getOriginalFilename());
-			 metaFile.setFileSize(mpf.getSize()/1024+" Kb");
-			 metaFile.setFileType(mpf.getContentType());
-			 
-			 metaFile.setCnpj( customer.getCnpj() );
-			 metaFile.setDate( Calendar.getInstance().getTimeInMillis() );
-			 
-			 metaFile.setReferenceId( productId );	
+			 MetaFile metaFile = createMetaFile(productId, customer, mpf);	
 			 
 			 File tmpFile = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") +  mpf.getOriginalFilename());
 			 mpf.transferTo(tmpFile);
 					 
 			 uploadService.upToAmazon(metaFile,tmpFile);
 			 
-			 files.add(metaFile);
+			 files.add(metaFile);			 			
 			 
-		}		 		
+		}				
 		 
 		return files;
+	}
+
+	private MetaFile createMetaFile(Long productId, Customer customer,
+			MultipartFile mpf) {
+		MetaFile metaFile = new MetaFile();
+		 
+		 metaFile.setFileName(mpf.getOriginalFilename());
+		 metaFile.setFileSize(mpf.getSize()/1024+" Kb");
+		 metaFile.setFileType(mpf.getContentType());
+		 
+		 metaFile.setCnpj( customer.getCnpj() );
+		 metaFile.setDate( Calendar.getInstance().getTimeInMillis() );
+		 
+		 metaFile.setReferenceId( productId );
+		return metaFile;
 	}	
 	
 	@RequestMapping(value = "/get/{value}/{id}", method = RequestMethod.GET)
