@@ -6,7 +6,8 @@
 <custom:main title="Detalhe" selectedItem="${product.description}">
 
 <link href="<c:url value="/assets/css/adipoli.css"/>" rel="stylesheet"/>
-
+<link href="<c:url value="/assets/css/bootstrap-switch.css"/>" rel="stylesheet"/>
+ 
 	<form>
 	 
 		<fieldset>	
@@ -16,46 +17,36 @@
 			<div class="span12">
 				<div class="span6">				
 					<fieldset>	
-						<h4>
-							Descrição
-						</h4>		
-						<label class="radio inline">															
-							<input type="radio" name="radioDesc" id="radioDesc1" value="radioDesc1" checked> VPSA
-						</label>		
-						<label class="radio inline">			
-							<input type="radio" name="radioDesc" id="radioDesc2" value="radioDesc2"> Customizado	
+						<label>
+							<div class="make-switch" data-text-label="Descrição" data-on-label="VPSA" data-off-label="Customizado" id="switchDesc">
+	    						<input type="checkbox" id="checkDesc" checked>
+							</div>		
 						</label>
 					</fieldset>																		
 					<fieldset>								
 						<textarea id="description_vpsa" rows="2" readonly="readonly" >
 							${product.description}
 						</textarea>
+						<textarea id="description" rows="2" class="hide">
+						</textarea>
 					</fieldset>
 					
 					<fieldset>	
-						<h4>
-							Preço
-						</h4>		
-						<label class="radio inline">															
-							<input type="radio" name="radioPreco" id="radioPreco1" value="radioPreco1" checked> VPSA
-						</label>		
-						<label class="radio inline">			
-							<input type="radio" name="radioPreco" id="radioPreco2" value="radioPreco2"> Customizado	
-						</label>
+						<label>
+							<div class="make-switch" data-text-label="Preço de Venda" data-on-label="VPSA" data-off-label="Customizado">
+	    						<input type="checkbox" id="checkPrice" checked>
+							</div>
+						</label>	
 					</fieldset>																		
 					<fieldset>								
 						<input type="text" id="preco" name="preco" value="${product.sellingPrice}"/>				
 					</fieldset>
 					
 					<fieldset>	
-						<h4>
-							Especificação
-						</h4>		
-						<label class="radio inline">															
-							<input type="radio" name="radioSpec" id="radioSpec1" value="radioSpec1" checked> VPSA
-						</label>		
-						<label class="radio inline">			
-							<input type="radio" name="radioSpec" id="radioSpec2" value="radioSpec2"> Customizado	
+						<label>
+							<div class="make-switch" data-text-label="Especificação" data-on-label="VPSA" data-off-label="Customizado">
+	    						<input type="checkbox" id="checkSpec" checked>
+							</div>
 						</label>
 					</fieldset>																		
 					<fieldset>								
@@ -146,13 +137,29 @@
 <script src="<c:url value="/assets/js/jquery.fileupload.js"/>"></script>
 <script src="<c:url value="/assets/js/myuploadfunction.js"/>" ></script>
 <script src="<c:url value="/assets/js/jquery.adipoli.min.js"/>" ></script>
+<script src="<c:url value="/assets/js/bootstrap-switch.min.js"/>" ></script>
 
 <script>
 $(function(){
     $('.row1').adipoli({
         'startEffect' : 'normal',
         'hoverEffect' : 'popout'
-    });   
+    });
+    
+    $('#switchDesc').on('switch-change', function (e, data) {
+    	console.log(data.value);
+     	if(data.value)
+     	{
+     		$("#description_vpsa").show();
+       		$("#description").hide();	
+     	}
+     	else
+     	{
+     		$("#description_vpsa").hide();
+       		$("#description").show();		
+     	}
+    	 
+     });
     
 });
 
@@ -161,7 +168,7 @@ function showImg(img){
 }
 
 function showImgModal(index){
-	$('.modal').carousel(index);
+	$('.modal').carousel(index + 1);
 }
 
 $('.modal').css({ 
