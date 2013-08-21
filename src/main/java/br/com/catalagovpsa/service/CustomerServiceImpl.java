@@ -1,13 +1,10 @@
 package br.com.catalagovpsa.service;
 
-import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.catalagovpsa.exception.CustomerNotFoundException;
 import br.com.catalagovpsa.model.Customer;
 import br.com.catalagovpsa.service.interfaces.CustomerService;
 import br.com.catalagovpsa.service.interfaces.SynchronizeService;
@@ -25,8 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
 	private SynchronizeService synchronizeService;	
 	
 	public Customer getCustomer() throws Exception{
-		
-//		ObjectNode result = template.getForObject(loginDetail, ObjectNode.class);
+	
 //		
 //		if (result != null) {
 //			OAuth2AccessToken token = template.getOAuth2ClientContext().getAccessToken();

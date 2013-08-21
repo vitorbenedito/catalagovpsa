@@ -8,14 +8,16 @@
 <link href="<c:url value="/assets/css/adipoli.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/assets/css/bootstrap-switch.css"/>" rel="stylesheet"/>
  
-	<form>
+<input type="hidden" id="productId" value="${product.id}" />		
 	 
 		<fieldset>	
 			<legend>Alteração Produto</legend>																					
 		</fieldset>
 		<div class="row-fluid">
+		
 			<div class="span12">
-				<div class="span6">				
+				<div class="span6">		
+				<form>		
 					<fieldset>	
 						<label>
 							<div class="make-switch" data-text-label="Descrição" data-on-label="VPSA" data-off-label="Customizado" id="switchDesc">
@@ -28,32 +30,40 @@
 							${product.description}
 						</textarea>
 						<textarea id="description" rows="2" class="hide">
+							${product.detail.description}
 						</textarea>
 					</fieldset>
 					
 					<fieldset>	
 						<label>
-							<div class="make-switch" data-text-label="Preço de Venda" data-on-label="VPSA" data-off-label="Customizado">
+							<div class="make-switch" data-text-label="Preço de Venda" data-on-label="VPSA" data-off-label="Customizado" id="switchPrice">
 	    						<input type="checkbox" id="checkPrice" checked>
 							</div>
 						</label>	
 					</fieldset>																		
 					<fieldset>								
-						<input type="text" id="preco" name="preco" value="${product.sellingPrice}"/>				
-					</fieldset>
+						<input type="text" id="sellingPrice_vpsa" name="sellingPrice_vpsa" value="${product.sellingPrice}" readonly="readonly" class="money"/>	
+						
+						<input type="text" id="sellingPrice" name="sellingPrice" value="${product.detail.sellingPrice}" style="display:none" class="money"/>					
+					</fieldset> 
 					
 					<fieldset>	
 						<label>
-							<div class="make-switch" data-text-label="Especificação" data-on-label="VPSA" data-off-label="Customizado">
+							<div class="make-switch" data-text-label="Especificação" data-on-label="VPSA" data-off-label="Customizado" id="switchSpecification">
 	    						<input type="checkbox" id="checkSpec" checked>
 							</div>
 						</label>
 					</fieldset>																		
 					<fieldset>								
-						<textarea id="description_vpsa" rows="6" readonly="readonly" >
+						<textarea id="specification_vpsa" rows="6" readonly="readonly" >
 							${product.specification}
 						</textarea>
+						
+						<textarea id="specification" rows="6" class="hide" >
+							${product.detail.specification}
+						</textarea>
 					</fieldset>
+				</form>
 				</div>
 				
 				<jsp:include page="photo.jsp" />
@@ -63,12 +73,9 @@
 		<hr/>
 		
 		<div class="btn-bottom">
-			<button type="submit" class="btn">Cancelar</button>
-			<button type="submit" class="btn btn-success">Salvar</button>
+			<button type="button" class="btn">Cancelar</button>
+			<button type="button" class="btn btn-success" id="salvar">Salvar</button>
 		</div>
-		
-	</form>
-	
 	
 	
  
@@ -147,7 +154,7 @@ $(function(){
     });
     
     $('#switchDesc').on('switch-change', function (e, data) {
-    	console.log(data.value);
+    	
      	if(data.value)
      	{
      		$("#description_vpsa").show();
@@ -160,6 +167,71 @@ $(function(){
      	}
     	 
      });
+    
+    $('#switchPrice').on('switch-change', function (e, data) {
+    	
+     	if(data.value)
+     	{
+     		$("#sellingPrice_vpsa").show();
+       		$("#sellingPrice").hide();	
+     	}
+     	else
+     	{
+     		$("#sellingPrice_vpsa").hide();
+       		$("#sellingPrice").show();		
+     	}
+    	 
+     });
+    
+    $('#switchSpecification').on('switch-change', function (e, data) {
+    	
+     	if(data.value)
+     	{
+     		$("#specification_vpsa").show();
+       		$("#specification").hide();	
+     	}
+     	else
+     	{
+     		$("#specification_vpsa").hide();
+       		$("#specification").show();		
+     	}
+    	 
+     });
+	
+    $("#salvar").click( function(){
+    	
+    	var detail = new Object(); 
+        detail.productId = $("#productId").val();
+    	detail.description = $("#description").val();
+    	detail.isDescriptionCustomized = $('#switchDesc').bootstrapSwitch('isActive') ? false : true;
+    	detail.specification = $("#specification").val();
+    	detail.isSpecificationCustomized = $('#switchSpecification').bootstrapSwitch('isActive') ? false : true;
+
+    	if($('#sellingPrice').data('mask').getCleanVal() > 0)
+    	{
+    		detail.sellingPrice = $('#sellingPrice').val().replace(/\./g, '').replace(/\,/g,".");
+    	}
+
+    	detail.isSellingPriceCustomized = $('#switchPrice').bootstrapSwitch('isActive') ? false : true;
+
+    	var jsonvalue = JSON.stringify(detail).replace(/\\t/g,"");
+    	
+    	$.ajax({ 
+    	    url: "/catalagovpsa/adm/product/save/", 
+    	    type: 'POST', 
+    	    dataType: 'json', 
+    	    data: jsonvalue, 
+    	    contentType: 'application/json',
+    	    mimeType: 'application/json',
+    	    success: function(data) { 
+
+    	    },
+    	    error:function(data,status,er) { 
+
+    	    }
+    	});	
+    	
+    });
     
 });
 

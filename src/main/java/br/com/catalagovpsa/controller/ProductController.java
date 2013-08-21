@@ -13,20 +13,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.google.gson.Gson;
 
 import br.com.catalagovpsa.model.Category;
 import br.com.catalagovpsa.model.Customer;
 import br.com.catalagovpsa.model.MetaFile;
 import br.com.catalagovpsa.model.Product;
+import br.com.catalagovpsa.model.ProductDetail;
 import br.com.catalagovpsa.repository.interfaces.CategoryRepository;
 import br.com.catalagovpsa.repository.interfaces.MetaFileRepository;
 import br.com.catalagovpsa.repository.interfaces.ProductRepository;
@@ -52,6 +58,35 @@ public class ProductController {
 	
 	@Autowired
 	private UploadService uploadService;
+	
+	@RequestMapping(value="/save/", method = RequestMethod.POST, headers="Content-Type=application/json")
+	public void post( @RequestBody final  String json) throws Exception {    
+		
+		Gson gson = new Gson();
+		ProductDetail detail = gson.fromJson(json, ProductDetail.class);
+		
+		Customer customer = customerService.getCustomer();    
+		
+		Product productLoad = productRepository.get(customer.getCnpj(), detail.getProductId());
+		
+		ProductDetail detailLoad = productLoad.getDetail();
+		
+		detailLoad.setProductId(detail.getProductId());
+		
+		detailLoad.setDescription(detail.getDescription());
+		detailLoad.setDescriptionCustomized( detail.isDescriptionCustomized() );
+		
+		detailLoad.setSellingPrice( detail.getSellingPrice() );
+		detailLoad.setSellingPriceCustomized( detail.isSellingPriceCustomized() );
+		
+		detailLoad.setSpecification( detail.getSpecification() );
+		detailLoad.setSpecificationCustomized( detail.isSpecificationCustomized() );
+		
+		productLoad.setDetail(detailLoad);
+		
+		productRepository.add(productLoad);
+
+	}
 	
 	@RequestMapping(value = "/")
 	public String index(Model model, HttpServletRequest request) throws Exception {
@@ -152,8 +187,7 @@ public class ProductController {
 		return files;
 	}
 
-	private MetaFile createMetaFile(Long productId, Customer customer,
-			MultipartFile mpf) {
+	private MetaFile createMetaFile(Long productId, Customer customer,MultipartFile mpf) {
 		MetaFile metaFile = new MetaFile();
 		 
 		 metaFile.setFileName(mpf.getOriginalFilename());

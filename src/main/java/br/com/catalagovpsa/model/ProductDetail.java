@@ -9,9 +9,15 @@ public class ProductDetail {
 
 	private String description;
 	
+	private boolean isDescriptionCustomized;
+	
 	private String specification;
 	
-	private BigDecimal sellingPrice;		
+	private boolean isSpecificationCustomized;
+	
+	private BigDecimal sellingPrice;
+	
+	private boolean isSellingPriceCustomized;
 
 	public Long getProductId() {
 		return productId;
@@ -43,6 +49,31 @@ public class ProductDetail {
 
 	public void setSellingPrice(BigDecimal sellingPrice) {
 		this.sellingPrice = sellingPrice;
+	}
+
+	public boolean isDescriptionCustomized() {
+		return isDescriptionCustomized;
+	}
+
+	public void setDescriptionCustomized(boolean isDescriptionCustomized) {
+		this.isDescriptionCustomized = isDescriptionCustomized;
+	}
+
+	public boolean isSpecificationCustomized() {
+		return isSpecificationCustomized;
+	}
+
+	public void setSpecificationCustomized(boolean isSpecificationCustomized) {
+		this.isSpecificationCustomized = isSpecificationCustomized;
+	}
+
+	public boolean isSellingPriceCustomized() {
+		return isSellingPriceCustomized;
+	}
+
+	public void setSellingPriceCustomized(boolean isSellingPriceCustomized) {
+		this.isSellingPriceCustomized = isSellingPriceCustomized;
 	}	
+	
 	
 }

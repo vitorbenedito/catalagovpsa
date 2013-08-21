@@ -254,7 +254,7 @@
 							<jsp:doBody/>
 						</section>
 						
-						<div id="loading" class="loading hide"><img width="220px" height="19px" alt="loading" src="<c:url value="/assets/img/ajax-loader.gif" />"></div>
+						<div id="loading" class="hide"><img width="220px" height="19px" alt="loading" src="<c:url value="/assets/img/ajax-loader.gif" />"></div>
 												
 						
 					</div><!--/row-->
@@ -319,6 +319,9 @@
 
 		<script src="<c:url value="/assets/themes/js/w8-elements.min.js"/>"></script>
 		<script src="<c:url value="/assets/themes/js/w8.min.js"/>"></script>
+		
+			
+		<script src="<c:url value="/assets/js/jquery.mask.min.js" />"></script>			
 		
 		<script src="<c:url value="/assets/js/events.js" />"></script>				
 
